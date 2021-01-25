@@ -1,0 +1,4 @@
+# noms:
+
+*inoma
+thoth

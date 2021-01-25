@@ -1,0 +1,53 @@
+from config import agent_config
+from celery import Celery
+from kombu.serialization import register
+
+from opulence.common.base_collector import BaseCollector
+from opulence.common.utils import load_classes_from_module
+from opulence.common.exceptions import InvalidCollectorDefinition
+from opulence.common import json_encoder
+
+
+def load_collectors():
+    collector_modules = load_classes_from_module("opulence/agent/collectors", BaseCollector)
+    collector_instances = {}
+    for collector in collector_modules:
+        collector_instance = collector()
+        collector_name = collector_instance.config.name
+        if collector_name in collector_instances:
+            raise InvalidCollectorDefinition(f"Found collector with duplicate name `{collector_name}`.")
+        else:
+            collector_instances[collector_name] = {"instance": collector_instance, "active": False}   
+    for collector_name in set(agent_config.collectors):
+        if collector_name not in collector_instances:
+            raise InvalidCollectorDefinition(f"Can't find `{collector_name}`, which is defined in the configuration file. Check your settings.yml file `collectors` section.")        
+        collector_instances[collector_name]["active"] = True
+    return collector_instances
+
+COLLECTORS = load_collectors()
+
+print(COLLECTORS)
+
+register(
+    "customEncoder",
+    json_encoder.json_dumps,
+    json_encoder.json_loads,
+    content_type="application/x-customEncoder",
+    content_encoding="utf-8",
+)
+
+celery_app = Celery(__name__)
+celery_app.conf.update(
+    {
+        'collectors': list(COLLECTORS.keys()),
+        'task_routes': {
+                'scan.*': { 'queue': 'scan', 'exchange': 'scan' }
+        },
+        "accept_content": ["customEncoder", "application/json"],
+        "task_serializer": "customEncoder",
+        "result_serializer": "customEncoder",
+    }
+)
+
+celery_app.conf.update(agent_config.celery)
+
