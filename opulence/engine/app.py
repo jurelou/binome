@@ -5,6 +5,8 @@ from opulence.engine import celery_app
 from opulence.engine.agent_manager import Manager
 from opulence.common.database.es import create_kibana_index_patterns, create_indexes
 from opulence.engine import es_client
+from opulence.engine import tasks # fw declaration ?
+
 Manager()
 
 @celery_app.task(name="engine.toto")
@@ -19,4 +21,3 @@ def startup(sender=None, conf=None, **kwargs):
     except Exception as err:
         print(f"Error while bootstraping elasticsearch: {err}")
 
-from .scans import tasks
