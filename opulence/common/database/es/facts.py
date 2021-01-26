@@ -1,4 +1,4 @@
-from opulence.common.database.es.base_index import BaseIndex
+from opulence.common.database.es.base import BaseIndex
 
 
 class FactIndex(BaseIndex):
