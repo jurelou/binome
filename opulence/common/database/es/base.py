@@ -1,5 +1,5 @@
 
-class BaseIndex():
+class BaseIndex:
   index_name = None
   replicas = 0
   refresh_interval = "30s"
