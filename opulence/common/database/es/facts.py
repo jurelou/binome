@@ -9,7 +9,7 @@ class FactIndex(BaseIndex):
     return {"mappings": {"properties": {}}}
   
   
-  def bulk_upsert(es_client, facts):
+  def bulk_upsert(self, es_client, facts):
     def gen_actions(facts):
       for fact in facts:
         yield {
