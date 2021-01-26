@@ -5,7 +5,7 @@ import pkgutil
 import sys
 
 
-def load_classes_from_module(mod_path, base_mod, skip_first_level=False):
+def load_classes_from_module(root_path, parent_class, skip_first_level=False):
     skip_level = skip_first_level
     def _discover_path(path):
 
@@ -22,7 +22,7 @@ def load_classes_from_module(mod_path, base_mod, skip_first_level=False):
          
 
     res = []
-    for mod_path in _discover_path(mod_path):
+    for mod_path in _discover_path(root_path):
         if mod_path not in sys.modules:
             try:
                 module = import_module(mod_path)
@@ -32,7 +32,7 @@ def load_classes_from_module(mod_path, base_mod, skip_first_level=False):
             module = sys.modules[mod_path]
         for _, mod_cls in inspect.getmembers(module, inspect.isclass):
             if mod_cls.__module__.startswith(mod_path) and issubclass(
-                mod_cls, base_mod
+                mod_cls, parent_class
             ):
                 res.append(mod_cls)
     return res
