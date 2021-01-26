@@ -1,6 +1,6 @@
 from config import agent_config
 from opulence.agent import celery_app
-from opulence.common.base_fact import BaseFact
+from opulence.common.fact import BaseFact
 from typing import List
 from opulence.common import exceptions
 # from celery import states
