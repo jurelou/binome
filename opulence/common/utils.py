@@ -5,16 +5,23 @@ import pkgutil
 import sys
 
 
-def load_classes_from_module(mod_path, base_mod):
-    res = []
+def load_classes_from_module(mod_path, base_mod, skip_first_level=False):
+    skip_level = skip_first_level
     def _discover_path(path):
+
         for (_, name, ispkg) in pkgutil.iter_modules([path]):
             pkg_path = os.path.join(path, name)
             if ispkg:
                 yield from _discover_path(pkg_path)
                 continue
-            yield pkg_path.replace("/", ".")
+            if not skip_level:
+                yield pkg_path.replace("/", ".")
+            else:
+                print("skipped", pkg_path)
+        skip_level = False
+         
 
+    res = []
     for mod_path in _discover_path(mod_path):
         if mod_path not in sys.modules:
             try:
