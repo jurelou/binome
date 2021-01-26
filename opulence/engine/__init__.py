@@ -1,8 +1,8 @@
 from config import engine_config
 from opulence.common.database.es import create_client
-from opulence.common.celery import create_celery_app
+from opulence.common.celery import create_app
 
-celery_app = create_celery_app()
+celery_app = create_app()
 celery_app.conf.update(
     {
         'task_routes': {
