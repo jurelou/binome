@@ -1,5 +1,5 @@
 from opulence.agent import celery_app 
-from opulence.common.base_fact import BaseFact
+from opulence.common.fact import BaseFact
 from typing import List
 
 def launch_scan(collector_name: str, facts: List[BaseFact]):
