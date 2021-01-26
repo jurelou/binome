@@ -1,9 +1,3 @@
-
-class BaseCollector:
-    def __init__(self):
-        pass
-
-
 from functools import partial
 from timeit import default_timer as timer
 from typing import Callable
@@ -21,14 +15,6 @@ from opulence.common.exceptions import InvalidCollectorDefinition, CollectorRunt
 
 from timeit import default_timer as timer
 
-
-# from opulence.common.collectors.exceptions import CollectorRuntimeError
-# from opulence.common.collectors.exceptions import InvalidCollectorDefinition
-# from opulence.common.models.collect_item import CollectItemModel
-# from opulence.common.models.collect_item import CollectItemResponseModel
-# from opulence.common.models.fact import BaseFact
-# from opulence.common.modules import BaseModule
-# from opulence.common.types import BaseSet
 
 
 class BaseConfig(BaseModel):
