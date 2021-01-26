@@ -6,7 +6,7 @@ from elasticsearch import Elasticsearch
 INDEXES = [facts_index]
 
 def create_client(config):
-    print("GO", config.endpoint)
+    print(f"Create ES client for config: {config.endpoint}")
     return Elasticsearch(hosts=[config.endpoint])
 
 def create_indexes(es_client):
@@ -17,7 +17,6 @@ def create_indexes(es_client):
             print("finish")
         else:
             print(f"Index {index.index_name} already exists")
-    print("done")
 
 
 # def clean(es_client):
