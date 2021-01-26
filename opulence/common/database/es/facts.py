@@ -20,4 +20,4 @@ class FactIndex(BaseIndex):
             'doc': action,
             "doc_as_upsert": True # ????
         }
-    es.parallel_bulk(client=es_client, actions=gen_actions(actions))
+    return es.parallel_bulk(client=es_client, actions=gen_actions(actions))
