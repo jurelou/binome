@@ -1,6 +1,6 @@
 from config import agent_config
 
-from opulence.common.base_collector import BaseCollector
+from opulence.common.collector import BaseCollector
 from opulence.common.utils import load_classes_from_module
 from opulence.common.exceptions import InvalidCollectorDefinition
 from opulence.common.celery import create_app
