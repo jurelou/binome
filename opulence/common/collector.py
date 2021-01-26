@@ -17,20 +17,21 @@ from timeit import default_timer as timer
 
 
 
+
+class CollectItem(BaseModel):
+    
+
+class CollectResult(BaseModel):
+    duration: float
+    executions_count : int
+        
+    errors: Optional[List[str]] = None
+    facts: Optional[List[BaseFact]] = None
+
+
 class BaseConfig(BaseModel):
     name: str
 
-class CollectorResponse:
-    def __init__(self):
-        self.errors = []
-        self.facts = []
-        self.duration: float = 0.0
-        self._start_time = timer()
-
-    def set_response(self, facts, errors):
-        self.facts = facts
-        self.errors = errors
-        self.duration = timer() - self._start_time
 
 class BaseCollector:
 
@@ -52,15 +53,6 @@ class BaseCollector:
             f"Collector {type(self).__name__} does not have any callbacks"
         )
 
-    # def json(self):
-    #     callbacks = []
-    #     for t in self._callbacks.keys():
-    #         if isinstance(t, BaseSet):
-    #             callbacks.append(t.json())
-    #         else:
-    #             callbacks.append({"type": "Single", "params": [t.__name__]})
-    #     return {"name": self.config.name, "allowed_types": callbacks}
-
     @staticmethod
     def _sanitize_output(fn):
         try:
@@ -69,6 +61,8 @@ class BaseCollector:
                 for out in output:
                     if isinstance(out, BaseFact):
                         yield out
+                    else:
+                        print(f"Found unknown output from collector: {out}")
         except Exception as err:
             logger.error(f"Error while executing {fn}: {err}")
             raise CollectorRuntimeError(err) from err
@@ -94,13 +88,16 @@ class BaseCollector:
                 facts.extend(list(self._sanitize_output(cb)))
             except CollectorRuntimeError as err:
                 errors.append(str(err))
-        return facts, errors
+        return facts or None, errors or None
 
     def collect(self, facts: List[BaseFact]) -> Iterator[BaseFact]:
+        start_time = timer()
+
         callbacks = self._prepare_callbacks(facts)
-
-        response = CollectorResponse()
-
         facts, errors = self._execute_callbacks(callbacks)
-        response.set_response(facts=facts, errors=errors)
-        return response
+
+        return CollectResult(
+            duration= timer() - start_time,
+            executions_count=len(callbacks),
+            errors=errors,
+            facts=facts)
