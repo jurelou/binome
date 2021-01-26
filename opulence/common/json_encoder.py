@@ -1,6 +1,6 @@
 import json
 
-from opulence.common.base_fact import BaseFact
+from opulence.common.fact import BaseFact
 from opulence.common.utils import load_classes_from_module
 
 facts_modules = load_classes_from_module("opulence/facts", BaseFact)
