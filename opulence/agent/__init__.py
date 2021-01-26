@@ -3,7 +3,7 @@ from config import agent_config
 from opulence.common.base_collector import BaseCollector
 from opulence.common.utils import load_classes_from_module
 from opulence.common.exceptions import InvalidCollectorDefinition
-from opulence.common.celery import create_celery_app
+from opulence.common.celery import create_app
 
 def load_collectors():
     collector_modules = load_classes_from_module("opulence/agent/collectors", BaseCollector)
@@ -26,7 +26,7 @@ COLLECTORS = load_collectors()
 print(COLLECTORS)
 
 
-celery_app = create_celery_app()
+celery_app = create_app()
 celery_app.conf.update(
     {
         'collectors': list(COLLECTORS.keys()),
