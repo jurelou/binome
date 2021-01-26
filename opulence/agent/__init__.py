@@ -1,12 +1,9 @@
 from config import agent_config
-from celery import Celery
-from kombu.serialization import register
 
 from opulence.common.base_collector import BaseCollector
 from opulence.common.utils import load_classes_from_module
 from opulence.common.exceptions import InvalidCollectorDefinition
-from opulence.common import json_encoder
-
+from opulence.common.celery import create_celery_app
 
 def load_collectors():
     collector_modules = load_classes_from_module("opulence/agent/collectors", BaseCollector)
@@ -28,26 +25,15 @@ COLLECTORS = load_collectors()
 
 print(COLLECTORS)
 
-register(
-    "customEncoder",
-    json_encoder.json_dumps,
-    json_encoder.json_loads,
-    content_type="application/x-customEncoder",
-    content_encoding="utf-8",
-)
 
-celery_app = Celery(__name__)
+celery_app = create_celery_app()
 celery_app.conf.update(
     {
         'collectors': list(COLLECTORS.keys()),
         'task_routes': {
                 'scan.*': { 'queue': 'scan', 'exchange': 'scan' }
         },
-        "accept_content": ["customEncoder", "application/json"],
-        "task_serializer": "customEncoder",
-        "result_serializer": "customEncoder",
     }
 )
-
 celery_app.conf.update(agent_config.celery)
 
