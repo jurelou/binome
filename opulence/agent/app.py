@@ -2,7 +2,7 @@ from typing import List
 from celery.signals import worker_init
 from config import engine_config
 from opulence.agent import celery_app
-from opulence.common.base_fact import BaseFact
+from opulence.common.fact import BaseFact
 from opulence.agent import tasks
 from opulence.common.database.es import create_indexes
 
