@@ -12,4 +12,4 @@ disable=
     R0903, # Too few public methods (0/2) (too-few-public-methods)
 
 [DESIGN]
-max-parents=10
+max-parents=3
