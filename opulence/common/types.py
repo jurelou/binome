@@ -1,6 +1,6 @@
 import inspect
 
-from opulence.common.base_fact import BaseFact
+from opulence.common.fact import BaseFact
 
 
 def collect_fact_types(types):
