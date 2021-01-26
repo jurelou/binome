@@ -3,7 +3,7 @@ from kombu.serialization import register
 from opulence.common import json_encoder
 
 
-def create_celery_app():
+def create_app():
   register(
       "customEncoder",
       json_encoder.json_dumps,
