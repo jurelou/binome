@@ -5,7 +5,7 @@ from elasticsearch import Elasticsearch
 
 
 
-indexes = [facts_index]
+INDEXES = [facts_index]
 
 def create_client(config):
     print("GO", config.endpoint)
@@ -13,7 +13,7 @@ def create_client(config):
 
 def create_indexes(es_client):
     print("Bootstraping elasticsearch indexes")
-    for index in indexes:
+    for index in INDEXES:
         if not es_client.indices.exists(index=index.index_name):
             index.create_index()
             print("finish")
@@ -22,7 +22,7 @@ def create_indexes(es_client):
     print("done")
 
 def create_kibana_index_patterns():
-    for index in indexes:
+    for index in INDEXES:
         kibana_endpoint = f"{engine_config.kibana.url}/api/saved_objects/index-pattern/{index.index_name}"
         headers = {"kbn-xsrf": "yes", "Content-Type": "application/json"}
         data = {
