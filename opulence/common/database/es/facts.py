@@ -9,15 +9,14 @@ class FactIndex(BaseIndex):
     return {"mappings": {"properties": {}}}
   
   
-  def bulk_upsert(self, es_client, actions):    
-    def gen_actions(actions):
-      for action in actions:
-        _id = action.pop("__hash")
+  def bulk_upsert(es_client, facts):
+    def gen_actions(facts):
+      for fact in facts:
         yield {
             '_op_type': 'update',
             '_index': self.index_name,
-            '_id': _id,
-            'doc': action,
-            "doc_as_upsert": True # ????
+            '_id': fact.__hash,
+            'doc': fact.dict(exclude="__hash"),
+            'doc_as_upsert': True # ????
         }
-    return es.parallel_bulk(client=es_client, actions=gen_actions(actions))
+    return es.parallel_bulk(client=es_client, actions=gen_actions(facts))
