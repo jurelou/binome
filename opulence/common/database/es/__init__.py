@@ -1,9 +1,8 @@
 from opulence.common.database.es.fact import FactIndex
 from elasticsearch import Elasticsearch
 
-
-
-INDEXES = [FactIndex()]
+fact_index = FactIndex()
+INDEXES = [fact_index]
 
 def create_client(config):
     print(f"Create ES client for config: {config.endpoint}")
