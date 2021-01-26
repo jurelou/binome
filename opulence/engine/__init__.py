@@ -8,7 +8,7 @@ celery_app = create_app()
 celery_app.conf.update(
     {
         'task_routes': {
-                'toto.*': { 'queue': 'toto', 'exchange': 'toto' }
+                # 'scan.*': { 'queue': 'scan', 'exchange': 'scan' }
         }
     }
 )

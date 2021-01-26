@@ -1,4 +1,4 @@
-from opulence.common.base_fact import BaseFact
+from opulence.common.fact import BaseFact
 
 
 class Email(BaseFact):

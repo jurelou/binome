@@ -7,6 +7,7 @@ from typing import List
 from typing import Optional
 from typing import Union
 
+from opulence.common import utils
 from pydantic import BaseModel
 from pydantic import ValidationError
 from opulence.common.fact import BaseFact
@@ -55,8 +56,17 @@ class BaseCollector:
 
     @staticmethod
     def _sanitize_output(fn):
+        def force_list(data):
+            print("INITIAL", data)
+            if utils.is_iterable(data):
+                return list(data)
+            if not utils.is_list(data):
+                return [data]
         try:
-            output = fn()
+            output = force_list(fn())
+            print("OUT~~~~~~~~~~~~~~~~~~~")
+            print(output)
+            print(fn)
             if output:
                 for out in output:
                     if isinstance(out, BaseFact):
@@ -64,22 +74,24 @@ class BaseCollector:
                     else:
                         print(f"Found unknown output from collector: {out}")
         except Exception as err:
-            logger.error(f"Error while executing {fn}: {err}")
+            print(f"Error while executing {fn}: {err}")
+            # logger.error(f"Error while executing {fn}: {err}")
             raise CollectorRuntimeError(err) from err
 
     def _prepare_callbacks(
         self, input_fact: Union[List[BaseFact], BaseFact]
     ) -> Iterator[Callable]:
+        callbacks = []
         for cb_type, cb in self._callbacks.items():
             if isinstance(cb_type, BaseSet):
                 _set = cb_type.select_from(input_fact)
                 if _set:
-                    yield partial(cb, _set)
+                    callbacks.append(partial(cb, _set))
             else:
                 for fact in input_fact:
                     if cb_type == type(fact):
-                        yield partial(cb, fact)
-
+                        callbacks.append(partial(cb, fact))
+        return callbacks
     def _execute_callbacks(self, callbacks):
         facts = []
         errors = []

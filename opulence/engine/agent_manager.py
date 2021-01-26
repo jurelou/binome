@@ -29,6 +29,7 @@ class Manager:
 
     def add_worker(self, worker):
         global AGENTS
+        print("yo")
         inspect = celery_app.control.inspect([worker])
         if not self.is_listening_for_scans(inspect, worker):
             AGENTS.pop(worker, None)
@@ -57,5 +58,6 @@ class Manager:
         print(f"AGENTS: {AGENTS}")
 
     def run(self):
+        print("go")
         self.capture({'worker-heartbeat': self.online_event}, limit=5)
         self.capture({'worker-online': self.online_event, 'worker-offline': self.offline_event}, limit=None)

@@ -3,9 +3,10 @@ from celery.signals import worker_init
 
 from opulence.engine import celery_app
 from opulence.engine.agent_manager import Manager
-from opulence.common.database.es import create_kibana_index_patterns, create_indexes
+from opulence.common.database.es import create_indexes
 from opulence.engine import es_client
 from opulence.engine import tasks # fw declaration ?
+
 
 Manager()
 
@@ -17,7 +18,12 @@ def toto():
 def startup(sender=None, conf=None, **kwargs):
     try:
         create_indexes(es_client)
-        create_kibana_index_patterns()
     except Exception as err:
         print(f"Error while bootstraping elasticsearch: {err}")
 
+
+
+from opulence.agent import signatures
+from opulence.facts.person import Person
+a = signatures.launch_scan("b-collector", [Person(firstname="lol", lastname="mdr")]).delay()
+print("!!!!!!!!!!!", a.get())

@@ -3,7 +3,7 @@ celery:
     result_backend: redis://localhost/0
 
 collectors:
-    - a-collector
+    - b-collector
 
 elasticsearch:
     endpoint:

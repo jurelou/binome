@@ -1,5 +1,5 @@
 from opulence.common.database.es.base import BaseIndex
-from elasticsearch.helpers import parallel_bulk
+from elasticsearch.helpers import bulk
 
 class FactIndex(BaseIndex):
   index_name = "facts"
@@ -12,11 +12,14 @@ class FactIndex(BaseIndex):
   def bulk_upsert(self, es_client, facts):
     def gen_actions(facts):
       for fact in facts:
+        
         yield {
             '_op_type': 'update',
             '_index': self.index_name,
-            '_id': fact.__hash,
-            'doc': fact.dict(exclude="__hash"),
+            '_id': fact.hash__,
+            'doc': fact.dict(exclude={"hash__"}),
             'doc_as_upsert': True # ????
         }
-    return es.parallel_bulk(client=es_client, actions=gen_actions(facts))
+        print("GGOOGOGOGOG")
+    print("SALUT", facts[0].firstname)
+    return bulk(client=es_client, actions=gen_actions(facts))

@@ -13,8 +13,8 @@ def load_collectors():
         collector_name = collector_instance.config.name
         if collector_name in collector_instances:
             raise InvalidCollectorDefinition(f"Found collector with duplicate name `{collector_name}`.")
-        collector_instances[collector_name] = {"instance": collector_instance, "active": False}   
-    for collector_name in set(agent_config.collectors):
+        collector_instances[collector_name] = {"instance": collector_instance, "active": False}
+    for collector_name in set(agent_config.collectors or []):
         if collector_name not in collector_instances:
             raise InvalidCollectorDefinition(f"Can't find `{collector_name}`, which is defined in the configuration file. Check your settings.yml file `collectors` section.")        
         collector_instances[collector_name]["active"] = True
@@ -22,7 +22,7 @@ def load_collectors():
 
 COLLECTORS = load_collectors()
 
-print(COLLECTORS)
+print("COLLECTORS", COLLECTORS)
 
 
 celery_app = create_app()

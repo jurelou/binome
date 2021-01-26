@@ -1,6 +1,6 @@
 from opulence.engine import celery_app
-from opulence.agent.scan import tasks
-from opulence.agent.scan import signatures
+# from opulence.agent.scan import tasks
+# from opulence.agent.scan import signatures
 from opulence.facts.person import Person
 from opulence.common.fact import BaseFact
 

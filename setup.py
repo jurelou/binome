@@ -17,7 +17,8 @@ setup(
       "celery==5.0.5",
       "redis==3.5.3",
       "pydantic==1.7.3",
-      "elasticsearch-7.10.1"
+      "elasticsearch==7.10.1",
+      "httpx == 0.16.1"
     ],
     extras_require={
 

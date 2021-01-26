@@ -13,5 +13,6 @@ class b(BaseCollector):
             Email: self.cb,
         }
     
-    def cb(self):
-        pass
+    def cb(self, person):
+        return Person(firstname="this", lastname="person")
+
