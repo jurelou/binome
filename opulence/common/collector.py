@@ -9,7 +9,7 @@ from typing import Union
 
 from pydantic import BaseModel
 from pydantic import ValidationError
-from opulence.common.base_fact import BaseFact
+from opulence.common.fact import BaseFact
 from opulence.common.types import BaseSet
 from opulence.common.exceptions import InvalidCollectorDefinition, CollectorRuntimeError
 
