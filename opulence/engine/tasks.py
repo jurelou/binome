@@ -2,7 +2,7 @@ from opulence.engine import celery_app
 from opulence.agent.scan import tasks
 from opulence.agent.scan import signatures
 from opulence.facts.person import Person
-from opulence.common.base_fact import BaseFact
+from opulence.common.fact import BaseFact
 
 
 # a = tasks.test_agent.apply_async().get()
