@@ -19,7 +19,7 @@ from timeit import default_timer as timer
 
 
 class CollectItem(BaseModel):
-    
+    pass
 
 class CollectResult(BaseModel):
     duration: float
