@@ -1,4 +1,4 @@
-from opulence.common.database.es.fact_index import FactIndex
+from opulence.common.database.es.fact import FactIndex
 from elasticsearch import Elasticsearch
 
 
