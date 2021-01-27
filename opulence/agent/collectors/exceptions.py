@@ -1,47 +1,34 @@
-class PluginError(Exception):
+from opulence.agent.exceptions import BaseAgentException
+
+# Root exception for collectors
+class BaseCollectorException(BaseAgentException):
     def __init__(self, value=None):
         self.value = value or ""
 
-
-class PluginFormatError(PluginError):
+# Collector common errors
+class InvalidCollectorDefinition(BaseCollectorException):
     def __init__(self, value):
         super().__init__(value)
 
     def __str__(self):
-        return "Plugin format error: ({})".format(self.value)
+        return "Invalid collector definition: {}".format(self.value)
 
-
-class PluginRuntimeError(PluginError):
+class CollectorRuntimeError(BaseCollectorException):
     def __init__(self, value):
         super().__init__(value)
 
     def __str__(self):
-        return "Plugin runtime error: ({})".format(self.value)
+        return "Collector runtime error: {}".format(self.value)
 
 
-class PluginVerifyError(PluginError):
-    def __init__(self, value=None):
-        super().__init__(value)
-
-    def __str__(self):
-        return "Plugin additional verification failed: ({})".format(self.value)
-
-
-class DependencyMissing(PluginError):
+# Collector's dependencies exceptions
+class DependencyMissing(BaseCollectorException):
     def __init__(self, value=None, dependency=None):
         super(DependencyMissing, self).__init__(value)
         self.dependency = dependency
 
     def __str__(self):
         return "Missing dependency (default): {}".format(self.dependency)
-
-
-class RateLimitException(PluginError):
-    def __init__(self, value):
-        super().__init__(value)
-
-    def __str__(self):
-        return "Plugin Rate limit error: ({})".format(self.value)
 
 
 class ModuleDependencyMissing(DependencyMissing):
