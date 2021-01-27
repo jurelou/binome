@@ -5,14 +5,11 @@ from shutil import which
 
 #from opulence.common.passwordstore import Store
 
-from .exceptions import (
-    BinaryDependencyMissing, DependencyMissing, FileDependencyMissing,
-    ModuleDependencyMissing, PasswordDependencyMissing
-)
+from opulence.agent.collectors import exceptions
 
 
 class Dependency:
-    exception = DependencyMissing
+    exception = exceptions.DependencyMissing
 
     def __init__(self, dependency):
         self.dependency_name = dependency
@@ -32,7 +29,7 @@ class Dependency:
 
 
 class BinaryDependency(Dependency):
-    exception = BinaryDependencyMissing
+    exception = exceptions.BinaryDependencyMissing
 
     def is_satisfied(self):
         return which(self.dependency_name) is not None
@@ -46,7 +43,7 @@ class BinaryDependency(Dependency):
 
 
 class ModuleDependency(Dependency):
-    exception = ModuleDependencyMissing
+    exception = exceptions.ModuleDependencyMissing
 
     def is_satisfied(self):
         if self.dependency_name in sys.modules:
@@ -59,7 +56,7 @@ class ModuleDependency(Dependency):
 
 
 class FileDependency(Dependency):
-    exception = FileDependencyMissing
+    exception = exceptions.FileDependencyMissing
 
     def is_satisfied(self):
         return os.path.exists(self.dependency_name) and os.path.isfile(
