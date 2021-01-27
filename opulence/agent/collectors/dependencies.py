@@ -3,7 +3,7 @@ import sys
 from importlib import import_module
 from shutil import which
 
-from opulence.common.passwordstore import Store
+#from opulence.common.passwordstore import Store
 
 from .exceptions import (
     BinaryDependencyMissing, DependencyMissing, FileDependencyMissing,
@@ -38,11 +38,11 @@ class BinaryDependency(Dependency):
         return which(self.dependency_name) is not None
 
 
-class PasswordDependency(Dependency):
-    exception = PasswordDependencyMissing
-
-    def is_satisfied(self):
-        return Store().get_decrypted_password(self.dependency_name) is not None
+#class PasswordDependency(Dependency):
+#    exception = PasswordDependencyMissing
+#
+#    def is_satisfied(self):
+#        return Store().get_decrypted_password(self.dependency_name) is not None
 
 
 class ModuleDependency(Dependency):
