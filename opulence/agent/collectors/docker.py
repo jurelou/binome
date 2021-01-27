@@ -17,4 +17,4 @@ class DockerCollector(BaseCollector):
     def run_container(self, image, command: Union[str, List[str]], **kwargs):
         # https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.ContainerCollection.run
         # self.__pull_image(image) ??
-        self.__client.containers.run(image, command, auto_remove=True, detach=False, network_mode="bridge", remove=True, **kwargs)
+        return self.__client.containers.run(image, command, auto_remove=True, detach=False, network_mode="bridge", remove=True, **kwargs)
