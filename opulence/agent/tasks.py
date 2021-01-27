@@ -6,7 +6,7 @@ from opulence.common import exceptions
 # from celery import states
 # from celery.exceptions import Ignore
 
-from opulence.agent import COLLECTORS
+from opulence.agent.collectors import all_collectors
 
 @celery_app.task(name="scan.test")
 def test_agent():
@@ -18,14 +18,14 @@ def test_agent():
 @celery_app.task(throws=(exceptions.BaseAgentException), name="scan.launch")
 def launch_scan(collector_name: str, facts: List[BaseFact]):
 
-    print(COLLECTORS)
-    if collector_name not in COLLECTORS:
+    print(all_collectors)
+    if collector_name not in all_collectors:
         raise exceptions.CollectorNotFound(f"Collector {collector_name} not found.")
 
-    if not COLLECTORS[collector_name]["active"]:
+    if not all_collectors[collector_name]["active"]:
         raise exceptions.CollectorDisabled(f"Collector {collector_name} is not enabled.")
 
     
-    result = COLLECTORS[collector_name]["instance"].collect(facts)
+    result = all_collectors[collector_name]["instance"].collect(facts)
     result = result.dict()
     return result
