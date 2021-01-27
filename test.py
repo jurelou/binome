@@ -12,21 +12,21 @@ app.conf.update(engine_config.celery)
 #from celery.execute import send_task    
 #send_task('toto:tasque')
 
-p = Person(firstname="fname", lastname="lname")
-print("ADD", p)
-r = fact_index.bulk_upsert(es_client, [p])
-print("RES=>", r)
+# p = Person(firstname="fname", lastname="lname")
+# print("ADD", p)
+# r = fact_index.bulk_upsert(es_client, [p])
+# print("RES=>", r)
 
-p = Person(firstname="fname", lastname="lname", age=1222222222222)
-print("ADD", p)
-r = fact_index.bulk_upsert(es_client, [p])
-print("RES=>", r)
+# p = Person(firstname="fname", lastname="lname", age=1222222222222)
+# print("ADD", p)
+# r = fact_index.bulk_upsert(es_client, [p])
+# print("RES=>", r)
 
 
 
-print("====")
-for a in p:
-    print(a)
+# print("====")
+# for a in p:
+#     print(a)
 
 
 
@@ -34,4 +34,14 @@ for a in p:
 #    return app.signature(f"{collector_name}:tasque", immutable=True)
 
 #scan_signature("toto").delay()
+
+
+
+import docker
+
+client = docker.from_env()
+
+
+a = client.containers.run("alpine", command=["ls", "-lah"])
+print(a)
 

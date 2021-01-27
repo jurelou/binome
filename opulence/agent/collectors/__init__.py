@@ -1,7 +1,7 @@
 from opulence.agent.collectors.base import BaseCollector
 from opulence.common.utils import load_classes_from_module
-from opulence.common.exceptions import InvalidCollectorDefinition
-
+from opulence.agent.collectors.exceptions import InvalidCollectorDefinition
+from config import agent_config
 def load_collectors():
     collector_modules = load_classes_from_module(root_path="opulence/agent/collectors", parent_class=BaseCollector, skip_first_level=True)
     collector_instances = {}

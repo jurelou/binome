@@ -29,9 +29,11 @@ def launch_scan(collector_name: str, facts: List[BaseFact]):
 
     
     collect_result = all_collectors[collector_name]["instance"].collect(facts)
+
+    upserted_facts = fact_index.bulk_upsert(es_client, collect_result.facts)
+
+
+    result = collect_result.dict(exclude={"facts"})
+    result["facts"] = upserted_facts
     
-    collect_result = collect_result.dict()
-    upserted_facts = fact_index.bulk_upsert(es_client, collect_result["facts"])
-    collect_result["facts"] = upserted_facts
-    
-    return collect_result
+    return result
