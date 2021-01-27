@@ -32,6 +32,6 @@ def launch_scan(collector_name: str, facts: List[BaseFact]):
     
     collect_result = collect_result.dict()
     upserted_facts = fact_index.bulk_upsert(es_client, collect_result["facts"])
-    collect_result["facts"] = upserted_facts
+    collect_result["facts"] = [ fact.hash__ for fact in collect_result["facts"]]
     
     return collect_result
