@@ -1,12 +1,14 @@
 from config import agent_config
-from opulence.agent import celery_app
 from opulence.common.fact import BaseFact
 from typing import List
-from opulence.agent import exceptions
+from opulence.agent import es_client, exceptions, celery_app
+from opulence.agent.collectors import all_collectors
+
+from opulence.common.database.es import fact_index 
+
 # from celery import states
 # from celery.exceptions import Ignore
 
-from opulence.agent.collectors import all_collectors
 
 @celery_app.task(name="scan.test")
 def test_agent():
@@ -26,6 +28,10 @@ def launch_scan(collector_name: str, facts: List[BaseFact]):
         raise exceptions.CollectorDisabled(f"Collector {collector_name} is not enabled.")
 
     
-    result = all_collectors[collector_name]["instance"].collect(facts)
-    result = result.dict()
-    return result
+    collect_result = all_collectors[collector_name]["instance"].collect(facts)
+    
+    collect_result = collect_result.dict()
+    upserted_facts = fact_index.bulk_upsert(es_client, collect_result["facts"])
+    collect_result["facts"] = upserted_facts
+    
+    return collect_result
