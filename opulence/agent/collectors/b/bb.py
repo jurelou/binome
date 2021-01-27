@@ -1,4 +1,5 @@
-from opulence.common.collector import BaseCollector
+from opulence.agent.collector.base import BaseCollector
+
 from opulence.facts.person import Person
 from opulence.facts.email import Email
 
