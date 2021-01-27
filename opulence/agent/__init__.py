@@ -1,12 +1,12 @@
 from config import agent_config
 
 from opulence.common.celery import create_app
-
+from opulence.common.database.es import create_client
 from opulence.agent.collectors import all_collectors
 
 print("COLLECTORS", all_collectors)
 
-
+# Create celery app
 celery_app = create_app()
 celery_app.conf.update(
     {
@@ -18,3 +18,6 @@ celery_app.conf.update(
 )
 celery_app.conf.update(agent_config.celery)
 
+
+# Create ES instance
+es_client = create_client(agent_config.elasticsearch)
