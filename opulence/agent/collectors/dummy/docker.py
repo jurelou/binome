@@ -1,8 +1,15 @@
-from opulence.agent.collectors.base import BaseCollector, BaseConfig
-import docker
-from typing import Union, List
-#class DockerConfig(BaseConfig):
-#    docker_image: str
+from opulence.agent.collectors.docker import DockerCollector
 
+from opulence.facts.person import Person
 
-class DockerCollector(BaseCollector):
+class DummyDocker(DockerCollector):
+    config = {
+        "name": "dummy-docker-collector",
+    }
+
+    def callbacks(self):
+        return { Person: self.cb }
+
+    def cb(self, person):
+      hello = self.run_container("ubuntu", command=['echo', '"hi"'])
+      yield Person(firstname="dummy docker collector", lastname=hello)
