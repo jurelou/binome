@@ -6,7 +6,7 @@ from opulence.agent import celery_app
 from opulence.common.fact import BaseFact
 from opulence.agent import tasks
 from opulence.common.database.es import create_indexes
-from opulence.engine import es_client
+from opulence.agent import es_client
 from opulence.common.celery import setup_loggers
 # @celery_app.task(name="scan.launch")
 # def launch_scan(collector_name: str, facts: List[BaseFact]):
