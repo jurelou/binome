@@ -4,9 +4,8 @@
 
 - central docker registry: https://docs.docker.com/registry/deploying/
 
-- docker: build & push dans le registry
-    pull dans  le collector
-
+- docker: build & push  & pull dans le registry
+    dans le collecteur: prerequis
 # noms:
 
 *inoma
