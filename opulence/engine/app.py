@@ -1,12 +1,12 @@
 from config import engine_config
-from celery.signals import worker_init
+from celery.signals import worker_init, after_setup_logger
 
 from opulence.engine import celery_app
 from opulence.engine.agent_manager import Manager
 from opulence.common.database.es import create_indexes
 from opulence.engine import es_client
 from opulence.engine import tasks # fw declaration ?
-
+from opulence.common.celery import setup_loggers
 
 Manager()
 
@@ -21,6 +21,9 @@ def startup(sender=None, conf=None, **kwargs):
     except Exception as err:
         print(f"Error while bootstraping elasticsearch: {err}")
 
+@after_setup_logger.connect
+def after_setup_loggers(logger, *args, **kwargs):
+    setup_loggers(logger, *args, **kwargs)
 
 
 from opulence.agent import signatures
