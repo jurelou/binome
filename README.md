@@ -1,3 +1,11 @@
+# TODO:
+
+proper logging
+
+central docker registry
+
+
+
 # noms:
 
 *inoma
