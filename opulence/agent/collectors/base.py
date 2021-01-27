@@ -22,17 +22,17 @@ from timeit import default_timer as timer
 class CollectItem(BaseModel):
     pass
 
+
+class BaseConfig(BaseModel):
+    name: str
+
 class CollectResult(BaseModel):
+    collector_config: BaseConfig
     duration: float
     executions_count : int
         
     errors: Optional[List[str]] = None
     facts: Optional[List[BaseFact]] = None
-
-
-class BaseConfig(BaseModel):
-    name: str
-
 
 class BaseCollector:
 
@@ -57,16 +57,13 @@ class BaseCollector:
     @staticmethod
     def _sanitize_output(fn):
         def force_list(data):
-            print("INITIAL", data)
             if utils.is_iterable(data):
                 return list(data)
             if not utils.is_list(data):
                 return [data]
+            return data
         try:
             output = force_list(fn())
-            print("OUT~~~~~~~~~~~~~~~~~~~")
-            print(output)
-            print(fn)
             if output:
                 for out in output:
                     if isinstance(out, BaseFact):
@@ -109,7 +106,8 @@ class BaseCollector:
         facts, errors = self._execute_callbacks(callbacks)
 
         return CollectResult(
-            duration= timer() - start_time,
+            collector_config=self.config,
+            duration=timer() - start_time,
             executions_count=len(callbacks),
             errors=errors,
             facts=facts)
