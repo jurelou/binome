@@ -1,4 +1,5 @@
 from celery import Celery
+import logging
 from kombu.serialization import register
 from opulence.common import json_encoder
 
@@ -25,7 +26,7 @@ def setup_loggers(logger, *args, **kwargs):
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     # FileHandler
-    fh = logging.FileHandler('logs.log')
+    fh = logging.FileHandler('opulence.log')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
 
