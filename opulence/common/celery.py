@@ -20,3 +20,16 @@ def create_app():
       }
   )
   return celery_app  
+
+def setup_loggers(logger, *args, **kwargs):
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    # FileHandler
+    fh = logging.FileHandler('logs.log')
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+
+    # SysLogHandler
+    #slh = logging.handlers.SysLogHandler(address=('logsN.papertrailapp.com', '...'))
+    #slh.setFormatter(formatter)
+    #logger.addHandler(slh)
