@@ -2,7 +2,7 @@ from config import agent_config
 from opulence.agent import celery_app
 from opulence.common.fact import BaseFact
 from typing import List
-from opulence.common import exceptions
+from opulence.agent import exceptions
 # from celery import states
 # from celery.exceptions import Ignore
 
