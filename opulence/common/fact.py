@@ -3,6 +3,9 @@ from pydantic import BaseModel, root_validator
 from typing import Optional
 import hashlib
 
+from opulence.common.utils import load_classes_from_module
+
+
 class BaseFact(BaseModel):
     __hash: Optional[str] = None
 
@@ -23,3 +26,9 @@ class BaseFact(BaseModel):
     class Config(BaseConfig):
         allow_population_by_alias = True
         extra = "allow"
+
+def load_all_facts():
+    facts_modules = load_classes_from_module("opulence/facts", BaseFact)
+    return {mod.schema()["title"]: mod for mod in facts_modules}
+
+all_facts = load_all_facts()
