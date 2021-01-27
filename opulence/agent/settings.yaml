@@ -5,6 +5,9 @@ celery:
 collectors:
     - b-collector
 
+docker_registry:
+    endpoint: localhost:5000
+
 elasticsearch:
     endpoint:
         host: localhost
