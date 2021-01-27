@@ -13,7 +13,7 @@ from pydantic import ValidationError
 from opulence.common.fact import BaseFact
 from opulence.common.types import BaseSet
 from opulence.common.exceptions import InvalidCollectorDefinition, CollectorRuntimeError
-
+from opulence.agent.collectors.dependencies import Dependency
 from timeit import default_timer as timer
 
 
@@ -37,6 +37,7 @@ class CollectResult(BaseModel):
 class BaseCollector:
 
     config: Optional[BaseConfig] = None
+    dependencies: Optional[List[Dependency]] = None
 
     def __init__(self):
         self._callbacks: Dict[Union[BaseFact, BaseSet], Callable] = self.callbacks()
