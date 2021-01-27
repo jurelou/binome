@@ -1,7 +1,7 @@
 from opulence.agent.collectors.base import BaseCollector, BaseConfig
 
 class DockerConfig(BaseConfig):
-    image: str
+    docker_image: str
 
 
 class DockerCollector(BaseCollector):
