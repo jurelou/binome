@@ -18,7 +18,8 @@ setup(
       "redis==3.5.3",
       "pydantic==1.7.3",
       "elasticsearch==7.10.1",
-      "httpx == 0.16.1"
+      "httpx==0.16.1",
+      "docker==4.4.1"
     ],
     extras_require={
 
