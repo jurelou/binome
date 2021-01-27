@@ -2,7 +2,7 @@
 
 proper logging
 
-central docker registry
+central docker registry: https://docs.docker.com/registry/deploying/
 
 
 
