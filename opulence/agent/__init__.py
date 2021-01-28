@@ -12,7 +12,7 @@ celery_app.conf.update(
     {
         'collectors': {c_name: {"active": c_item["active"], "config": c_item["instance"].config.dict()} for c_name, c_item in all_collectors.items()},
         'task_routes': {
-                'scan.*': { 'queue': 'scan', 'exchange': 'scan' }
+                'agent.scan.*': { 'queue': 'agent_scan', 'exchange': 'agent_scan' }
         },
     }
 )
