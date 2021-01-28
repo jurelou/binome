@@ -16,7 +16,9 @@ from opulence.agent.collectors.exceptions import InvalidCollectorDefinition, Col
 from opulence.agent.collectors.dependencies import Dependency
 from timeit import default_timer as timer
 
+import logging
 
+logger = logging.getLogger(__name__)
 
 
 class CollectItem(BaseModel):
@@ -70,9 +72,9 @@ class BaseCollector:
                     if isinstance(out, BaseFact):
                         yield out
                     else:
-                        print(f"Found unknown output from collector: {out}")
+                        logger.error(f"Found unknown output from collector: {out}")
         except Exception as err:
-            print(f"Error while executing {fn}: {err}")
+            logger.error(f"Error while executing {fn}: {err}")
             # logger.error(f"Error while executing {fn}: {err}")
             raise CollectorRuntimeError(err) from err
 
