@@ -1,4 +1,4 @@
-from config import agent_config
+from opulence.config import agent_config
 
 from opulence.common.celery import create_app
 from opulence.common.database.es import create_client
