@@ -1,4 +1,4 @@
-from config import agent_config
+from opulence.config import agent_config
 from opulence.common.fact import BaseFact
 from typing import List
 from opulence.agent import es_client, exceptions, celery_app
