@@ -29,6 +29,8 @@ class BaseFact(BaseModel):
 
 def load_all_facts():
     facts_modules = load_classes_from_module("opulence/facts", BaseFact)
-    return {mod.schema()["title"]: mod for mod in facts_modules}
+    facts = {mod.schema()["title"]: mod for mod in facts_modules}
+    logger.info(f"Loaded facts: {facts.keys()}")
+    return facts
 
 all_facts = load_all_facts()
