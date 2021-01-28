@@ -26,9 +26,3 @@ def startup(sender=None, conf=None, **kwargs):
 @after_setup_logger.connect
 def after_setup_loggers(logger, *args, **kwargs):
     setup_loggers(logger, *args, **kwargs)
-
-
-from opulence.agent import signatures
-from opulence.facts.person import Person
-a = signatures.launch_scan("b-collector", [Person(firstname="lol", lastname="mdr")]).delay()
-print("!!!!!!!!!!!", a.get())
