@@ -4,7 +4,7 @@ from opulence.common.celery import create_app
 from opulence.common.database.es import create_client
 from opulence.agent.collectors import all_collectors
 
-print("COLLECTORS", all_collectors)
+
 
 # Create celery app
 celery_app = create_app()
