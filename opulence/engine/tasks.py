@@ -10,9 +10,9 @@ from opulence.common.fact import BaseFact
 # print("res->", a)
 # print("@@@@@@@@@@@@@@@@@")
 
-# @celery_app.task(name="engine.toto")
-# def single_collector_scan(collector_name: str, facts: List[BaseFact]):
-#     print("!!!!!!ENGINE TOTO")
+@celery_app.task(name="engine.scan.launch")
+def single_collector_scan(collector_name: str, facts: List[BaseFact]):
+  print("!!!!!!ENGINE TOTO")
 
 
 # a = signatures.launch_scan("a-collector", [Person(firstname="a", lastname="b")]).apply_async()
