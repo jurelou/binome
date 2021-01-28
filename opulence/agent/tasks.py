@@ -12,14 +12,14 @@ logger = logging.getLogger(__name__)
 # from celery.exceptions import Ignore
 
 
-@celery_app.task(name="scan.test")
+@celery_app.task(name="agent.scan.test")
 def test_agent():
     return "salut"
     # for i in [1, 2, 3, 4]:
     #     yield i
 
 #@celery_app.task(throws=(exceptions.BaseAgentException), name="scan.launch", acks_late=True)
-@celery_app.task(throws=(exceptions.BaseAgentException), name="scan.launch")
+@celery_app.task(throws=(exceptions.BaseAgentException), name="agent.scan.launch")
 def launch_scan(collector_name: str, facts: List[BaseFact]):
     logger.debug(f"launch scan {collector_name}")
 
