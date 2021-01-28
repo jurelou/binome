@@ -1,4 +1,4 @@
-from config import engine_config
+from opulence.config import engine_config
 from opulence.common.database.es import create_client, INDEXES
 from opulence.common.celery import create_app
 import httpx
