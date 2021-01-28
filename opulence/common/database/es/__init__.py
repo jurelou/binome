@@ -22,7 +22,7 @@ def create_indexes(es_client):
 
 
 def clean(es_client):
-    for index in indexes:
+    for index in INDEXES:
         if es_client.indices.exists(index=index.index_name):
             index.remove_index()
             logger.info(f"Remove index {index.index_name}")
