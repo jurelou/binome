@@ -10,7 +10,7 @@ celery_app = create_app()
 celery_app.conf.update(
     {
         'task_routes': {
-                # 'scan.*': { 'queue': 'scan', 'exchange': 'scan' }
+            'engine.scan.*': { 'queue': 'engine_scan', 'exchange': 'engine_scan' }
         }
     }
 )
