@@ -1,4 +1,4 @@
-from config import engine_config
+from opulence.config import engine_config
 from celery.signals import worker_init, after_setup_logger
 
 from opulence.engine import celery_app
