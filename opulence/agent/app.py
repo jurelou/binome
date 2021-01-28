@@ -8,6 +8,9 @@ from opulence.agent import tasks
 from opulence.common.database.es import create_indexes
 from opulence.agent import es_client
 from opulence.common.celery import setup_loggers
+import logging
+
+logger = logging.getLogger(__name__)
 # @celery_app.task(name="scan.launch")
 # def launch_scan(collector_name: str, facts: List[BaseFact]):
 #     print("!!!!!!aaaaaa", collector_name)
@@ -19,8 +22,8 @@ def startup(sender=None, conf=None, **kwargs):
     try:
         create_indexes(es_client)
     except Exception as err:
-        print(f"Error while bootstraping elasticsearch: {err}")
-
+        logger.error(f"Error while bootstraping elasticsearch: {err}")
+    logger.debug("startup finished)
         
 @after_setup_logger.connect
 def after_setup_loggers(logger, *args, **kwargs):
