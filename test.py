@@ -1,4 +1,4 @@
-from config import engine_config
+from opulence.config import engine_config
 
 from opulence.facts.person import Person
 from opulence.common.celery import create_app
