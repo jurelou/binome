@@ -2,9 +2,10 @@ from pydantic import BaseConfig
 from pydantic import BaseModel, root_validator
 from typing import Optional
 import hashlib
-
+import logging 
 from opulence.common.utils import load_classes_from_module
 
+logger = logging.getLogger(__name__)
 
 class BaseFact(BaseModel):
     __hash: Optional[str] = None

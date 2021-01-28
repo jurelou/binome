@@ -2,7 +2,7 @@ import celery
 import logging
 from kombu.serialization import register
 from opulence.common import json_encoder
-
+import sys
 
 def create_app():
   register(
@@ -25,11 +25,18 @@ def create_app():
 def setup_loggers(logger, *args, **kwargs):
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
+    print("@@@@@@@@@@@@@")
     # FileHandler
     fh = logging.FileHandler('opulence.log')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
 
+    # Stdout handler
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
     # SysLogHandler
     #slh = logging.handlers.SysLogHandler(address=('logsN.papertrailapp.com', '...'))
     #slh.setFormatter(formatter)

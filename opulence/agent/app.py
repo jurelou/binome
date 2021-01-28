@@ -23,8 +23,10 @@ def startup(sender=None, conf=None, **kwargs):
         create_indexes(es_client)
     except Exception as err:
         logger.error(f"Error while bootstraping elasticsearch: {err}")
-    logger.debug("startup finished)
-        
+    logger.debug("startup finished")
+
+print("lol")
 @after_setup_logger.connect
 def after_setup_loggers(logger, *args, **kwargs):
+    print("SALUT")
     setup_loggers(logger, *args, **kwargs)

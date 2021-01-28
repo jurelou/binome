@@ -30,3 +30,5 @@ for index in INDEXES:
     }
     r = httpx.post(kibana_endpoint, json=data, headers=headers)
     logger.info(f"Kibana create index pattern ({index}): {r.status_code}")
+
+print("done")

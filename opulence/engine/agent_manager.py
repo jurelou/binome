@@ -54,7 +54,7 @@ class Manager:
     def online_event(self, event):
         hostname = event['hostname']
         self.add_worker(hostname)
-        logger.debug(f"Active agents: {AGENTS.keys()}")
+        print(f"Active agents: {AGENTS.keys()}")
 
     def capture(self, handlers, limit):
         with celery_app.connection() as connection:
@@ -62,5 +62,6 @@ class Manager:
             recv.capture(limit=limit, timeout=None, wakeup=True)
 
     def run(self):
+        print("fff")
         self.capture({'worker-heartbeat': self.online_event}, limit=5)
         self.capture({'worker-online': self.online_event, 'worker-offline': self.offline_event}, limit=None)

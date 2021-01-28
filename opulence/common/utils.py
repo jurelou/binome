@@ -21,14 +21,11 @@ def load_classes_from_module(root_path, parent_class, skip_first_level=False):
     def _discover_path(skip_first_level, path):
         for (_, name, ispkg) in pkgutil.iter_modules([path]):
             pkg_path = os.path.join(path, name)
-            print("=====", name, ispkg, pkg_path)
             if ispkg:
                 yield from _discover_path(False, pkg_path)
                 continue
             if not skip_first_level:
                 yield pkg_path.replace("/", ".")
-            else:
-                print("skipped", pkg_path)
          
 
     res = []
