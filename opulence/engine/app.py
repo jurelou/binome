@@ -7,7 +7,9 @@ from opulence.common.database.es import create_indexes
 from opulence.engine import es_client
 from opulence.engine import tasks # fw declaration ?
 from opulence.common.celery import setup_loggers
+import logging
 
+logger = logging.getLogger(__name__)
 Manager()
 
 @celery_app.task(name="engine.toto")
@@ -19,7 +21,7 @@ def startup(sender=None, conf=None, **kwargs):
     try:
         create_indexes(es_client)
     except Exception as err:
-        print(f"Error while bootstraping elasticsearch: {err}")
+        logger.error(f"Error while bootstraping elasticsearch: {err}")
 
 @after_setup_logger.connect
 def after_setup_loggers(logger, *args, **kwargs):
