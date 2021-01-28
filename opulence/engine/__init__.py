@@ -2,7 +2,9 @@ from config import engine_config
 from opulence.common.database.es import create_client, INDEXES
 from opulence.common.celery import create_app
 import httpx
+import logging
 
+logger = logging.getLogger(__name__)
 # Create celery app
 celery_app = create_app()
 celery_app.conf.update(
@@ -27,4 +29,4 @@ for index in INDEXES:
         }
     }
     r = httpx.post(kibana_endpoint, json=data, headers=headers)
-    print(f"Kibana create index pattern: {r.status_code}")
+    logger.info(f"Kibana create index pattern ({index}): {r.status_code}")
