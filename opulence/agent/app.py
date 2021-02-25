@@ -25,8 +25,6 @@ def startup(sender=None, conf=None, **kwargs):
         logger.error(f"Error while bootstraping elasticsearch: {err}")
     logger.debug("startup finished")
 
-print("lol")
 @after_setup_logger.connect
 def after_setup_loggers(logger, *args, **kwargs):
-    print("SALUT")
     setup_loggers(logger, *args, **kwargs)

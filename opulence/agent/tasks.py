@@ -21,7 +21,8 @@ def test_agent():
 #@celery_app.task(throws=(exceptions.BaseAgentException), name="scan.launch", acks_late=True)
 @celery_app.task(throws=(exceptions.BaseAgentException), name="agent.scan.launch")
 def launch_scan(collector_name: str, facts: List[BaseFact]):
-    logger.debug(f"launch scan {collector_name}")
+    print("AAAAAAAAAAAAAAA")
+    print(f"launch scan {collector_name}")
 
     if collector_name not in all_collectors:
         raise exceptions.CollectorNotFound(f"Collector {collector_name} not found.")

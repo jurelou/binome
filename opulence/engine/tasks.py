@@ -18,7 +18,11 @@ def scan(scan_type: str, config: BaseFact):
 # a = signatures.launch_scan("a-collector", [Person(firstname="a", lastname="b")]).apply_async()
 # print("RESYULT", a.get())
 
-# from opulence.engine import remote_tasks
-# from opulence.facts.person import Person
-# a = remote_tasks.launch_scan("b-collector", [Person(firstname="lol", lastname="mdr")]).delay()
-# print("!!!!!!!!!!!", a.get())
+from opulence.engine import remote_tasks
+from opulence.facts.person import Person
+from opulence.common.celery import sync_call
+from opulence.agent import celery_app 
+
+
+a = remote_tasks.launch_scan("b-collector", [Person(firstname="lol", lastname="mdr")]).apply_async()
+# print("@@@@", a.get())

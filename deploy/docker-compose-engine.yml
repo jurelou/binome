@@ -41,6 +41,7 @@ services:
     image: mher/flower:latest
     ports:
       - 127.0.0.1:5555:5555
+    depends_on: 
 
 ########################
 ##  REDIS
@@ -53,6 +54,7 @@ services:
 
 networks:
   elastic:
+
 
 volumes:
   elastic:
