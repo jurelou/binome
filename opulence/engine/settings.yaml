@@ -3,7 +3,8 @@ refresh_agents_interval: 5
 celery:
     queue_name: engine_q
     broker_url: redis://localhost/0
-    result_backend: redis://localhost/0
+    result_backend: redis://localhost/1
+    task_ignore_result: False
 
 kibana:
     url: http://localhost:5601

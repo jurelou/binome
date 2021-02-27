@@ -44,16 +44,14 @@ def create_app():
 
   return celery_app  
 
-@after_setup_logger.connect
-def setup_loggers(logger, *args, **kwargs):
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# @after_setup_logger.connect
+# def setup_loggers(logger, *args, **kwargs):
+#     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-    # FileHandler
-    fh = logging.FileHandler('logs.log')
-    fh.setFormatter(formatter)
-    logger.addHandler(fh)
-
-
+#     # FileHandler
+#     fh = logging.FileHandler('logs.log')
+#     fh.setFormatter(formatter)
+#     logger.addHandler(fh)
 
 
 

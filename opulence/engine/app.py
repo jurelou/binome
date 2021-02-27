@@ -5,6 +5,7 @@ from opulence.common.celery import create_app
 # Create celery app
 celery_app = create_app()
 celery_app.conf.update(engine_config.celery)
+
 celery_app.conf.beat_schedule = {
     'add-every-30-seconds': {
         'task': 'opulence.engine.tasks.reload_agents',
@@ -13,10 +14,8 @@ celery_app.conf.beat_schedule = {
 }
 celery_app.conf.update({'imports': "opulence.engine.tasks"})
 
-# from opulence.engine import tasks # pragma: nocover
-
-
-# tasks.scan.delay()
+from opulence.engine import tasks # pragma: nocover
+tasks.scan.delay()
 
 
 
