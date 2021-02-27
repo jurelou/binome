@@ -7,7 +7,7 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:7.10.1
     ports:
-      - 127.0.0.1:5601:5601
+      - 5601:5601
     volumes:
      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     environment:
@@ -22,8 +22,8 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
     ports:
-      - 127.0.0.1:9200:9200
-      - 127.0.0.1:9300:9300
+      - 9200:9200
+      - 9300:9300
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
@@ -40,9 +40,13 @@ services:
   flower:
     image: mher/flower:latest
     ports:
-      - 127.0.0.1:5555:5555
+      - 5555:5555
     depends_on: 
-
+      - redis
+    networks:
+      - admin
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
 ########################
 ##  REDIS
 ########################
@@ -50,11 +54,21 @@ services:
     image: redis:latest
     ports:
       - 127.0.0.1:6379:6379
+    hostname: redis
+    networks:
+      - admin
+
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - 8001:8001
+    networks:
+      - admin
 
 
 networks:
   elastic:
-
+  admin:
 
 volumes:
   elastic:

@@ -15,7 +15,7 @@ def create_client(config):
 def create_indexes(es_client):
     for index in INDEXES:
         if not es_client.indices.exists(index=index.index_name):
-            index.create_index()
+            index.create_index(es_client)
             logger.info(f"Created elasticsearch index {index.index_name}")
         else:
             logger.info(f"Index {index.index_name} already exists")

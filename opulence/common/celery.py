@@ -2,7 +2,27 @@ import celery
 import logging
 from kombu.serialization import register
 from opulence.common import json_encoder
+from celery.signals import after_setup_logger
+
 import sys
+
+# class TaskRouter(object):
+#     def route_for_task(self, task, *args, **kwargs):
+#         if ":" not in task:
+#             print("aaaaaaaaaaaaaaaaaaaaaa", task)
+#             return {"queue": "default"}
+#         namespace, rk = task.split(":")
+#         print("===============", namespace, rk)
+#         return {"queue": namespace,"routing_key": rk}
+
+
+# def route_task(name, args, kwargs, options, task=None, **kw):
+#         if ":" not in name:
+#             print("aaaaaaaaaaaaaaaaaaaaaa", name)
+#             return {"queue": "default"}
+#         namespace, rk = name.split(":")
+#         print("===============", namespace, rk)
+#         return {"queue": namespace,"routing_key": rk}
 
 def create_app():
   register(
@@ -15,43 +35,30 @@ def create_app():
   celery_app = celery.Celery(__name__)
   celery_app.conf.update(
       {
+        #   "task_routes": (route_task,),
           "accept_content": ["customEncoder", "application/json"],
           "task_serializer": "customEncoder",
           "result_serializer": "customEncoder",
       }
   )
+
   return celery_app  
 
+@after_setup_logger.connect
 def setup_loggers(logger, *args, **kwargs):
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-    print("@@@@@@@@@@@@@")
     # FileHandler
-    fh = logging.FileHandler('opulence.log')
+    fh = logging.FileHandler('logs.log')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
 
-    # Stdout handler
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-    # SysLogHandler
-    #slh = logging.handlers.SysLogHandler(address=('logsN.papertrailapp.com', '...'))
-    #slh.setFormatter(formatter)
-    #logger.addHandler(slh)
 
-def sync_call(app, task_path, timeout=5, **kwargs):
-    try:
-        task = app.send_task(task_path, **kwargs)
-        return task.get(timeout=timeout)
-    except celery.exceptions.TimeoutError:
-        raise TaskTimeoutError("{}".format(task_path))
+
 
 
 def async_call(app, task_path, **kwargs):
-    try:
+    # try:
         return app.send_task(task_path, **kwargs)
-    except celery.exceptions.TimeoutError:
-        raise TaskTimeoutError("{}".format(task_path))
+    # except celery.exceptions.TimeoutError:
+    #     raise TaskTimeoutError("{}".format(task_path))
