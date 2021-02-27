@@ -28,9 +28,12 @@ class BaseFact(BaseModel):
         allow_population_by_alias = True
         extra = "allow"
 
+    def elastic_mapping():
+        return {"mappings": {"properties": {}}}
+
 def load_all_facts():
     facts_modules = load_classes_from_module("opulence/facts", BaseFact)
-    facts = {mod.schema()["title"]: mod for mod in facts_modules}
+    facts = {mod.schema()["title"].lower(): mod for mod in facts_modules}
     logger.info(f"Loaded facts: {facts.keys()}")
     return facts
 

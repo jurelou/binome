@@ -6,7 +6,7 @@ class BaseIndex:
 
   @property
   def mapping(self):
-    return {"mappings": {"properties": {}}}
+    raise NotImplementedError(f"Mapping not implemented for {type(self).__name__}")
 
  
   def create_index(self, es_client):

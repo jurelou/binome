@@ -1,10 +1,9 @@
 from opulence.common.celery import create_app
-from opulence.common.database.es import create_client
+from opulence.common.database.es.utils import create_client
 from opulence.agent.controllers.collectors import all_collectors
 
 from celery.signals import worker_init
 from opulence.config import agent_config
-from opulence.common.database.es import create_indexes
 from kombu import Queue
 from opulence.agent.controllers.collectors import all_collectors
 
@@ -27,13 +26,4 @@ es_client = create_client(agent_config.elasticsearch)
 
 @worker_init.connect
 def startup(sender=None, conf=None, **kwargs):
-    
-    for name, collector in all_collectors.items():
-        print(f"{name} -> active: {collector['active']}")
-
-    try:
-        create_indexes(es_client)
-    except Exception as err:
-        logger.error(f"Error while bootstraping elasticsearch: {err}")
-    logger.debug("startup finished")
-    print("j'ai comence")
+    pass

@@ -6,4 +6,4 @@ docker:
 engine:
 	 celery  -A opulence.engine.app worker -B --hostname=engine --loglevel=info
 agent:
-	 celery  -A opulence.agent.app  worker --hostname=agent -Q agent_scan --loglevel=info 
+	 celery  -A opulence.agent.app  worker --hostname=agent --loglevel=info 

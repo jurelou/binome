@@ -4,7 +4,7 @@ from opulence.agent import exceptions
 from opulence.agent.app import celery_app, es_client
 from opulence.agent.controllers.collectors import all_collectors
 
-from opulence.common.database.es import fact_index 
+# from opulence.common.database.es import fact_index 
 from celery import current_task
 
 from celery.utils.log import get_task_logger
@@ -30,7 +30,7 @@ def scan(facts: List[BaseFact]):
     
     # return result
 
-    return {"salut": collect_result}
+    return {"salut": "collect_result"}
 
 
 # @celery_app.task(throws=(exceptions.BaseAgentException), name="agent.scan.launch")

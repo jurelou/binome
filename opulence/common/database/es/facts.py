@@ -1,19 +1,23 @@
 from opulence.common.database.es.base import BaseIndex
 from elasticsearch.helpers import bulk
 
-class FactIndex(BaseIndex):
+from opulence.common.fact import all_facts
+class FactsIndexes(BaseIndex):
   index_name = "facts"
 
   @property
   def mapping(self):
     return {"mappings": {"properties": {}}}
 
-  # def create_index(self, es_client):
-  #     es_client.indices.create(index=self.index_name, body=self.mapping)
-  #     es_client.indices.put_settings(
-  #         index=self.index_name,
-  #         body={"refresh_interval": self.refresh_interval, "number_of_replicas": self.replicas},
-  #     )  
+  def create_index(self, es_client):
+    print(all_facts)
+    print("====")
+    for fact, body in all_facts.items():
+      es_client.indices.create(index=fact, body=body.elastic_mapping(), ignore=400)
+      es_client.indices.put_settings(
+          index=fact,
+          body={"refresh_interval": self.refresh_interval, "number_of_replicas": self.replicas},
+      )  
   
   def bulk_upsert(self, es_client, facts):
     def gen_actions(facts):
