@@ -1,20 +1,45 @@
 from opulence.agent.collectors.base import BaseCollector, BaseConfig
 import docker
-from typing import Union, List
-#class DockerConfig(BaseConfig):
-#    docker_image: str
+from pydantic import BaseModel, root_validator
+import os
+from typing import Union, List, Optional
+
+
+class DockerConfig(BaseModel):
+    image: Optional[str] = None
+    build_context: Optional[str] = None
+
+    @root_validator
+    def check_passwords_match(cls, values):
+        image = values.get("image")
+        build_context = values.get("build_context")
+
+        if (not image and not build_context) or (image and build_context):
+            raise ValueError('Docker config should contains one of `image` or `build_context`')
+        return values
+
+
+class BaseDockerConfig(BaseConfig):
+   docker: DockerConfig
 
 
 class DockerCollector(BaseCollector):
 
     def configure(self):
-        self.config = BaseConfig(**self.config)
+        self.config = BaseDockerConfig(**self.config)
         self.__client = docker.from_env()
+        if self.config.docker.build_context:
+            a, _ = self.__build_image(self.config.docker.build_context, tag=f"opu_{self.config.name}")
+            self.__image = f"opu_{self.config.name}"
+        else:
+            a = self.__pull_image(self.config.docker.image)
+            self.__image = self.config.docker.image
 
-    def __pull_image(self, image,  tag=None, all_tags=False, **kwargs):
-        return self.__client.images.pull(image, tag=tag, all_tags=all_tags, **kwargs)
+    def __pull_image(self, image, **kwargs):
+        return self.__client.images.pull(image, **kwargs)
 
-    def run_container(self, image, command: Union[str, List[str]], **kwargs):
-        # https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.ContainerCollection.run
-        # self.__pull_image(image) ??
-        return self.__client.containers.run(image, command, auto_remove=True, detach=False, network_mode="bridge", remove=True, **kwargs)
+    def __build_image(self, path, tag, rm=True, **kwargs):
+        return self.__client.images.build(path=path, tag=tag, rm=rm, **kwargs)
+
+    def run_container(self, command: Union[str, List[str]], **kwargs):
+        return self.__client.containers.run(self.__image, command, detach=False, remove=True, **kwargs).decode("utf-8")

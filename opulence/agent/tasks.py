@@ -4,7 +4,7 @@ from opulence.agent import exceptions
 from opulence.agent.app import celery_app, es_client
 from opulence.agent.controllers.collectors import all_collectors
 
-# from opulence.common.database.es import fact_index 
+from opulence.common.database.es import facts as facts_index
 from celery import current_task
 
 from celery.utils.log import get_task_logger
@@ -20,9 +20,10 @@ def scan(facts: List[BaseFact]):
     if not all_collectors[collector_name]["active"]:
         raise exceptions.CollectorDisabled(f"Collector {collector_name} is not enabled.")
 
-
+    
     collect_result = all_collectors[collector_name]["instance"].collect(facts)
-    # upserted_facts = fact_index.bulk_upsert(es_client, collect_result.facts)
+    print("FOUND RES", collect_result)
+    upserted_facts = facts_index.bulk_upsert(es_client, collect_result.facts)
 
 
     # result = collect_result.dict(exclude={"facts"})

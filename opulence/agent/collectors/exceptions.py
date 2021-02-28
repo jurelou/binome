@@ -5,7 +5,7 @@ class BaseCollectorException(BaseAgentException):
     def __init__(self, value=None):
         self.value = value or ""
 
-# Collector common errors
+# Collector errors
 class InvalidCollectorDefinition(BaseCollectorException):
     def __init__(self, value):
         super().__init__(value)
@@ -22,30 +22,30 @@ class CollectorRuntimeError(BaseCollectorException):
 
 
 # Collector's dependencies exceptions
-class DependencyMissing(BaseCollectorException):
-    def __init__(self, value=None, dependency=None):
-        super(DependencyMissing, self).__init__(value)
-        self.dependency = dependency
+# class DependencyMissing(BaseCollectorException):
+#     def __init__(self, value=None, dependency=None):
+#         super(DependencyMissing, self).__init__(value)
+#         self.dependency = dependency
 
-    def __str__(self):
-        return "Missing dependency (default): {}".format(self.dependency)
-
-
-class ModuleDependencyMissing(DependencyMissing):
-    def __str__(self):
-        return "Could not find module: {}".format(self.dependency)
+#     def __str__(self):
+#         return "Missing dependency (default): {}".format(self.dependency)
 
 
-class PasswordDependencyMissing(DependencyMissing):
-    def __str__(self):
-        return "Could not find password: {}".format(self.dependency)
+# class ModuleDependencyMissing(DependencyMissing):
+#     def __str__(self):
+#         return "Could not find module: {}".format(self.dependency)
 
 
-class BinaryDependencyMissing(DependencyMissing):
-    def __str__(self):
-        return "Could not binary file: {}".format(self.dependency)
+# class PasswordDependencyMissing(DependencyMissing):
+#     def __str__(self):
+#         return "Could not find password: {}".format(self.dependency)
 
 
-class FileDependencyMissing(DependencyMissing):
-    def __str__(self):
-        return "Could not find file: {}".format(self.dependency)
+# class BinaryDependencyMissing(DependencyMissing):
+#     def __str__(self):
+#         return "Could not binary file: {}".format(self.dependency)
+
+
+# class FileDependencyMissing(DependencyMissing):
+#     def __str__(self):
+#         return "Could not find file: {}".format(self.dependency)

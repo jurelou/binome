@@ -7,7 +7,7 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-from opulence.common import utils
+from opulence.common.utils import make_list
 from pydantic import BaseModel
 from pydantic import ValidationError
 from opulence.common.fact import BaseFact
@@ -21,8 +21,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class CollectItem(BaseModel):
-    pass
+# class CollectItem(BaseModel):
+#     pass
 
 
 class BaseConfig(BaseModel):
@@ -33,7 +33,7 @@ class CollectResult(BaseModel):
     duration: float
     executions_count : int
         
-    errors: Optional[List[str]] = None
+    # errors: Optional[List[str]] = None
     facts: Optional[List[BaseFact]] = None
 
 class BaseCollector:
@@ -59,14 +59,8 @@ class BaseCollector:
 
     @staticmethod
     def _sanitize_output(fn):
-        def force_list(data):
-            if utils.is_iterable(data):
-                return list(data)
-            if not utils.is_list(data):
-                return [data]
-            return data
         try:
-            output = force_list(fn())
+            output = make_list(fn())
             if output:
                 for out in output:
                     if isinstance(out, BaseFact):
@@ -75,14 +69,12 @@ class BaseCollector:
                         logger.error(f"Found unknown output from collector: {out}")
         except Exception as err:
             logger.error(f"Error while executing {fn}: {err}")
-            # logger.error(f"Error while executing {fn}: {err}")
             raise CollectorRuntimeError(err) from err
 
     def _prepare_callbacks(
         self, input_fact: Union[List[BaseFact], BaseFact]
     ) -> Iterator[Callable]:
         callbacks = []
-        print("------------", input_fact)
         for cb_type, cb in self._callbacks.items():
             if isinstance(cb_type, BaseSet):
                 _set = cb_type.select_from(input_fact)
@@ -93,25 +85,23 @@ class BaseCollector:
                     if cb_type == type(fact):
                         callbacks.append(partial(cb, fact))
         return callbacks
+
+
     def _execute_callbacks(self, callbacks):
         facts = []
-        errors = []
         for cb in callbacks:
-            try:
-                facts.extend(list(self._sanitize_output(cb)))
-            except CollectorRuntimeError as err:
-                errors.append(str(err))
-        return facts or None, errors or None
+            facts.extend(list(self._sanitize_output(cb)))
+        return facts or None
 
     def collect(self, facts: List[BaseFact]) -> Iterator[BaseFact]:
         start_time = timer()
 
         callbacks = self._prepare_callbacks(facts)
-        facts, errors = self._execute_callbacks(callbacks)
+        facts = self._execute_callbacks(callbacks)
 
         return CollectResult(
             collector_config=self.config,
             duration=timer() - start_time,
             executions_count=len(callbacks),
-            errors=errors,
-            facts=facts)
+            facts=facts
+        )

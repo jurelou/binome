@@ -26,9 +26,12 @@ tasks.scan.delay()
 @worker_init.connect
 def startup(sender=None, conf=None, **kwargs):
     try:
-        es_utils.create_kibana_indexes(es_client, kibana_url=engine_config.kibana.url)
+        # es_utils.remove_kibana_patterns(es_client, kibana_url=engine_config.kibana.url)
+        es_utils.create_kibana_patterns(es_client, kibana_url=engine_config.kibana.url)
+
         es_utils.remove_indexes(es_client)
         es_utils.create_indexes(es_client)
+
     except Exception as err:
         print(f"ERROR in worker_init signal {err}")
     # try:

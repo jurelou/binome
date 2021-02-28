@@ -4,6 +4,7 @@ celery:
 
 collectors:
     - b-collector
+    - dummy-docker-collector
 
 elasticsearch:
     endpoint:
