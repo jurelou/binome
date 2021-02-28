@@ -33,4 +33,5 @@ def bulk_upsert(es_client, facts):
                 'doc': fact.dict(exclude={"hash__"}),
                 'doc_as_upsert': True
             }
+            print("Upsert to", gen_index_name(fact.schema()["title"]))
     return bulk(client=es_client, actions=gen_actions(facts))
