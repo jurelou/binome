@@ -4,11 +4,13 @@ import os
 import pkgutil
 import sys
 
+
 def get_actual_dir():
     frame = inspect.stack()[1]
     module = inspect.getmodule(frame[0])
     filename = module.__file__
     return os.path.dirname(os.path.abspath(module.__file__))
+
 
 def is_iterable(element):
     try:
@@ -22,16 +24,16 @@ def is_iterable(element):
 def is_list(element):
     return isinstance(element, (set, list, tuple))
 
+
 def make_list(data):
-            if is_iterable(data):
-                return list(data)
-            if not is_list(data):
-                return [data]
-            return data
+    if is_iterable(data):
+        return list(data)
+    if not is_list(data):
+        return [data]
+    return data
 
 
 def load_classes_from_module(root_path, parent_class, skip_first_level=False):
-
     def _discover_path(skip_first_level, path):
         for (_, name, ispkg) in pkgutil.iter_modules([path]):
             pkg_path = os.path.join(path, name)
@@ -40,7 +42,6 @@ def load_classes_from_module(root_path, parent_class, skip_first_level=False):
                 continue
             if not skip_first_level:
                 yield pkg_path.replace("/", ".")
-         
 
     res = []
     for mod_path in _discover_path(skip_first_level, root_path):
@@ -54,8 +55,7 @@ def load_classes_from_module(root_path, parent_class, skip_first_level=False):
             module = sys.modules[mod_path]
         for _, mod_cls in inspect.getmembers(module, inspect.isclass):
             if mod_cls.__module__.startswith(mod_path) and issubclass(
-                mod_cls, parent_class
+                mod_cls, parent_class,
             ):
                 res.append(mod_cls)
     return res
-

@@ -1,11 +1,15 @@
-from pydantic import BaseConfig
-from pydantic import BaseModel, root_validator
-from typing import Optional
 import hashlib
-import logging 
+import logging
+from typing import Optional
+
+from pydantic import BaseConfig
+from pydantic import BaseModel
+from pydantic import root_validator
+
 from opulence.common.utils import load_classes_from_module
 
 logger = logging.getLogger(__name__)
+
 
 class BaseFact(BaseModel):
     __hash: Optional[str] = None
@@ -23,7 +27,7 @@ class BaseFact(BaseModel):
                 m.update(str(k).encode() + str(values[k]).encode())
         values["hash__"] = m.hexdigest()
         return values
- 
+
     class Config(BaseConfig):
         allow_population_by_alias = True
         extra = "allow"
@@ -31,10 +35,12 @@ class BaseFact(BaseModel):
     def elastic_mapping():
         return {"mappings": {"properties": {}}}
 
+
 def load_all_facts():
     facts_modules = load_classes_from_module("opulence/facts", BaseFact)
     facts = {mod.schema()["title"].lower(): mod for mod in facts_modules}
     logger.info(f"Loaded facts: {facts.keys()}")
     return facts
+
 
 all_facts = load_all_facts()

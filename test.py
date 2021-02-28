@@ -1,16 +1,16 @@
-from opulence.config import engine_config
-
-from opulence.facts.person import Person
 from opulence.common.celery import create_app
-from opulence.common.database.es import create_client, INDEXES
+from opulence.common.database.es import INDEXES
+from opulence.common.database.es import create_client
 from opulence.common.database.es import fact_index
+from opulence.config import engine_config
+from opulence.facts.person import Person
 
 es_client = create_client(engine_config.elasticsearch)
 app = create_app()
 app.conf.update(engine_config.celery)
 
-#from celery.execute import send_task    
-#send_task('toto:tasque')
+# from celery.execute import send_task
+# send_task('toto:tasque')
 
 # p = Person(firstname="fname", lastname="lname")
 # print("ADD", p)
@@ -23,18 +23,15 @@ app.conf.update(engine_config.celery)
 # print("RES=>", r)
 
 
-
 # print("====")
 # for a in p:
 #     print(a)
 
 
-
-#def scan_signature(collector_name):    
+# def scan_signature(collector_name):
 #    return app.signature(f"{collector_name}:tasque", immutable=True)
 
-#scan_signature("toto").delay()
-
+# scan_signature("toto").delay()
 
 
 import docker
@@ -44,4 +41,3 @@ client = docker.from_env()
 
 a = client.containers.run("alpine", command=["ls", "-lah"])
 print(a)
-

@@ -9,13 +9,8 @@ class Person(BaseFact):
         return {
             "mappings": {
                 "properties": {
-                    "lastname": {
-                        "type": "keyword"
-                    },
-                    "firstname": {
-                        "type": "keyword"
-                    }
-
-                }
-            }
+                    "lastname": {"type": "keyword",},
+                    "firstname": {"type": "keyword",},
+                },
+            },
         }

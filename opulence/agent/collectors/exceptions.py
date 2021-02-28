@@ -1,9 +1,11 @@
 from opulence.agent.exceptions import BaseAgentException
 
+
 # Root exception for collectors
 class BaseCollectorException(BaseAgentException):
     def __init__(self, value=None):
         self.value = value or ""
+
 
 # Collector errors
 class InvalidCollectorDefinition(BaseCollectorException):
@@ -11,14 +13,15 @@ class InvalidCollectorDefinition(BaseCollectorException):
         super().__init__(value)
 
     def __str__(self):
-        return "Invalid collector definition: {}".format(self.value)
+        return f"Invalid collector definition: {self.value}"
+
 
 class CollectorRuntimeError(BaseCollectorException):
     def __init__(self, value):
         super().__init__(value)
 
     def __str__(self):
-        return "Collector runtime error: {}".format(self.value)
+        return f"Collector runtime error: {self.value}"
 
 
 # Collector's dependencies exceptions

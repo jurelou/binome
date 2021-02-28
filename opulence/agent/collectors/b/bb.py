@@ -1,7 +1,7 @@
 from opulence.agent.collectors.base import BaseCollector
-
-from opulence.facts.person import Person
 from opulence.facts.email import Email
+from opulence.facts.person import Person
+
 
 class b(BaseCollector):
     config = {
@@ -13,7 +13,6 @@ class b(BaseCollector):
             Person: self.cb,
             Email: self.cb,
         }
-    
+
     def cb(self, person):
         return Person(firstname="this", lastname="person")
-

@@ -1,4 +1,7 @@
 from functools import partial
+import logging
+
+# from opulence.agent.collectors.dependencies import Dependency
 from timeit import default_timer as timer
 from typing import Callable
 from typing import Dict
@@ -7,16 +10,14 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-from opulence.common.utils import make_list
 from pydantic import BaseModel
 from pydantic import ValidationError
+
+from opulence.agent.collectors.exceptions import CollectorRuntimeError
+from opulence.agent.collectors.exceptions import InvalidCollectorDefinition
 from opulence.common.fact import BaseFact
 from opulence.common.types import BaseSet
-from opulence.agent.collectors.exceptions import InvalidCollectorDefinition, CollectorRuntimeError
-# from opulence.agent.collectors.dependencies import Dependency
-from timeit import default_timer as timer
-
-import logging
+from opulence.common.utils import make_list
 
 logger = logging.getLogger(__name__)
 
@@ -28,13 +29,15 @@ logger = logging.getLogger(__name__)
 class BaseConfig(BaseModel):
     name: str
 
+
 class CollectResult(BaseModel):
     collector_config: BaseConfig
     duration: float
-    executions_count : int
-        
+    executions_count: int
+
     # errors: Optional[List[str]] = None
     facts: Optional[List[BaseFact]] = None
+
 
 class BaseCollector:
 
@@ -54,7 +57,7 @@ class BaseCollector:
 
     def callbacks(self) -> Dict[Union[BaseFact, BaseSet], Callable]:
         raise InvalidCollectorDefinition(
-            f"Collector {type(self).__name__} does not have any callbacks"
+            f"Collector {type(self).__name__} does not have any callbacks",
         )
 
     @staticmethod
@@ -72,7 +75,7 @@ class BaseCollector:
             raise CollectorRuntimeError(err) from err
 
     def _prepare_callbacks(
-        self, input_fact: Union[List[BaseFact], BaseFact]
+        self, input_fact: Union[List[BaseFact], BaseFact],
     ) -> Iterator[Callable]:
         callbacks = []
         for cb_type, cb in self._callbacks.items():
@@ -85,7 +88,6 @@ class BaseCollector:
                     if cb_type == type(fact):
                         callbacks.append(partial(cb, fact))
         return callbacks
-
 
     def _execute_callbacks(self, callbacks):
         facts = []
@@ -103,5 +105,5 @@ class BaseCollector:
             collector_config=self.config,
             duration=timer() - start_time,
             executions_count=len(callbacks),
-            facts=facts
+            facts=facts,
         )

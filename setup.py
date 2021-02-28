@@ -13,17 +13,14 @@ setup(
     packages=find_namespace_packages(include=["opulence.*"]),
     entry_points={},
     install_requires=[
-      "dynaconf[yaml]==3.1.2",
-      "celery==5.0.5",
-      "redis==3.5.3",
-      "pydantic==1.7.3",
-      "elasticsearch==7.10.1",
-      "httpx==0.16.1",
-      "docker==4.4.1"
+        "dynaconf[yaml]==3.1.2",
+        "celery==5.0.5",
+        "redis==3.5.3",
+        "pydantic==1.7.3",
+        "elasticsearch==7.10.1",
+        "httpx==0.16.1",
+        "docker==4.4.1",
     ],
-    extras_require={
-
-
-    },
+    extras_require={},
     python_requires=">=3.8.*, <4",
 )

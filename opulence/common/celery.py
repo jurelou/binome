@@ -1,10 +1,11 @@
-import celery
 import logging
-from kombu.serialization import register
-from opulence.common import json_encoder
-from celery.signals import after_setup_logger
-
 import sys
+
+import celery
+from celery.signals import after_setup_logger
+from kombu.serialization import register
+
+from opulence.common import json_encoder
 
 # class TaskRouter(object):
 #     def route_for_task(self, task, *args, **kwargs):
@@ -24,25 +25,27 @@ import sys
 #         print("===============", namespace, rk)
 #         return {"queue": namespace,"routing_key": rk}
 
-def create_app():
-  register(
-      "customEncoder",
-      json_encoder.json_dumps,
-      json_encoder.json_loads,
-      content_type="application/x-customEncoder",
-      content_encoding="utf-8",
-  )
-  celery_app = celery.Celery(__name__)
-  celery_app.conf.update(
-      {
-        #   "task_routes": (route_task,),
-          "accept_content": ["customEncoder", "application/json"],
-          "task_serializer": "customEncoder",
-          "result_serializer": "customEncoder",
-      }
-  )
 
-  return celery_app  
+def create_app():
+    register(
+        "customEncoder",
+        json_encoder.json_dumps,
+        json_encoder.json_loads,
+        content_type="application/x-customEncoder",
+        content_encoding="utf-8",
+    )
+    celery_app = celery.Celery(__name__)
+    celery_app.conf.update(
+        {
+            #   "task_routes": (route_task,),
+            "accept_content": ["customEncoder", "application/json"],
+            "task_serializer": "customEncoder",
+            "result_serializer": "customEncoder",
+        },
+    )
+
+    return celery_app
+
 
 # @after_setup_logger.connect
 # def setup_loggers(logger, *args, **kwargs):
@@ -54,9 +57,10 @@ def create_app():
 #     logger.addHandler(fh)
 
 
-
 def async_call(app, task_path, **kwargs):
     # try:
-        return app.send_task(task_path, **kwargs)
-    # except celery.exceptions.TimeoutError:
-    #     raise TaskTimeoutError("{}".format(task_path))
+    return app.send_task(task_path, **kwargs)
+
+
+# except celery.exceptions.TimeoutError:
+#     raise TaskTimeoutError("{}".format(task_path))

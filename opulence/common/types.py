@@ -19,12 +19,12 @@ class BaseSet:
 
     def check_against(self, target) -> bool:  # pragma: no cover
         raise NotImplementedError(
-            f"Set {type(self).__name__} does not contains a `check_against` method."
+            f"Set {type(self).__name__} does not contains a `check_against` method.",
         )
 
     def select_from(self, props):  # pragma: no cover
         raise NotImplementedError(
-            f"Set {type(self).__name__} does not contains a `select_from` method."
+            f"Set {type(self).__name__} does not contains a `select_from` method.",
         )
 
     def json(self):

@@ -1,6 +1,14 @@
 version: "3.3"
 
 services:
+  neo4j:
+    image: neo4j
+    ports:
+      - 7474:7474
+      - 7687:7687
+    environment:
+      NEO4J_AUTH: neo4j/root
+
 ########################
 ##  KIBANA
 ########################
@@ -31,7 +39,7 @@ services:
       - elastic
     volumes:
       - elastic:/usr/share/elasticsearch/data
-    depends_on: 
+    depends_on:
       - kibana
 
 ########################
@@ -41,7 +49,7 @@ services:
     image: mher/flower:latest
     ports:
       - 5555:5555
-    depends_on: 
+    depends_on:
       - redis
     networks:
       - admin

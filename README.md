@@ -18,7 +18,3 @@ thoth
 ocaro
 
 ocai
-
-
-
-
