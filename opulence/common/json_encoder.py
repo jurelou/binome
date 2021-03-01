@@ -2,6 +2,10 @@ import json
 
 from opulence.common.fact import BaseFact
 from opulence.common.fact import all_facts
+from uuid import UUID
+from opulence.engine.models.scan import Scan
+from opulence.engine.models.case import Case
+
 
 
 class encode(json.JSONEncoder):
@@ -12,6 +16,19 @@ class encode(json.JSONEncoder):
                 "fact": obj.json(),
                 "fact_type": type(obj).__name__.lower(),
             }
+        elif isinstance(obj, UUID):
+            return {"__type__": "__uuid__", "uuid": obj.hex}
+        elif isinstance(obj, Scan):
+            return {
+                "__type__": "__scan__",
+                "scan": obj.json()
+            }
+        elif isinstance(obj, Case):
+            return {
+                "__type__": "__case__",
+                "case": obj.json()
+            }
+ 
         return json.JSONEncoder.default(self, obj)
 
 
@@ -19,6 +36,12 @@ def decode(obj):
     if "__type__" in obj:
         if obj["__type__"] == "__fact__":
             return all_facts[obj["fact_type"]].parse_raw(obj["fact"])
+        elif obj["__type__"] == "__uuid__":
+            return UUID(obj["uuid"])
+        elif obj["__type__"] == "__scan__":
+            return Scan.parse_raw(obj["scan"])
+        elif obj["__type__"] == "__case__":
+            return Case.parse_raw(obj["case"])
     return obj
 
 

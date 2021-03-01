@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, BaseConfig
 import uuid
 
 
-class Scan(BaseModel):
+class Case(BaseModel):
     external_id: uuid.UUID = Field(default_factory=uuid.uuid4)
 
     class Config(BaseConfig):

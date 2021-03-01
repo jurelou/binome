@@ -1,7 +1,12 @@
-def create_scan(client, id, data):
+from opulence.engine.models.scan import Scan
+from uuid import uuid4
+
+
+def create(client, scan: Scan):
         with client.session() as session:
             session.run(
-                "MERGE (s:Scan {external_id: $external_id}) " "SET s += $data",
-                external_id=id,
-                data=data,
+                "CREATE (scan:Scan {external_id: $external_id}) "
+                "SET scan += $data",
+                external_id=scan.external_id.hex,
+                data=scan.dict(exclude={"external_id"}),
             )

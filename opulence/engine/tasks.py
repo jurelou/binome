@@ -1,7 +1,12 @@
 from opulence.engine.app import celery_app
 from opulence.engine.controllers import agents as agents_ctrl
+from opulence.engine.controllers import case as case_ctrl
 from opulence.engine.controllers import scan as scan_ctrl
 
+from opulence.engine.models.scan import Scan
+from opulence.engine.models.case import Case
+
+from uuid import uuid4
 
 @celery_app.task
 def reload_agents():
@@ -10,9 +15,17 @@ def reload_agents():
 
 
 @celery_app.task
-def scan():
-    print("je scan")
-    scan_ctrl.new()
+def add_case(case: Case):
+    print("new case")
+    case_ctrl.create(case)
+
+@celery_app.task
+def add_scan(case_id: uuid4, scan: Scan):
+    print("new scan")
+
+    scan_ctrl.create(scan)
+    case_ctrl.add_scan(case_id, scan.external_id)
+
 
 
 # a = tasks.test_agent.apply_async().get()
