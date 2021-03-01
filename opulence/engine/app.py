@@ -50,9 +50,9 @@ def ready(sender=None, conf=None, **kwargs):
     from opulence.engine.models.scan import Scan
     from opulence.engine.models.case import Case
     from opulence.engine import tasks  # pragma: nocover
-
+    from opulence.facts.person import Person
     case = Case()
-    scan = Scan()
+    scan = Scan(collector_name="lol", facts=[Person(firstname="fname", lastname="lname")])
     tasks.add_case.apply(args=[case])
     print("Now adding scan")
     tasks.add_scan.apply(args=[case.external_id, scan])

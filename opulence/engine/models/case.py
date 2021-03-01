@@ -8,6 +8,6 @@ class Case(BaseModel):
     class Config(BaseConfig):
         allow_population_by_alias = True
         extra = "allow"
-        json_encoders = {
-            uuid.UUID: lambda u: u.hex
-        }
+        # json_encoders = {
+        #     uuid.UUID: lambda u: u.hex
+        # }

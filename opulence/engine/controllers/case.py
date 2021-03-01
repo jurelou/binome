@@ -9,7 +9,6 @@ from opulence.engine.models.scan import Scan
 
 from uuid import uuid4
 
-# def create: crée dans neo3j
 def create(case: Case):
     print("new case")
     case.bite = "mdr"

@@ -2,7 +2,7 @@ from opulence.engine.models.scan import Scan
 from uuid import uuid4
 
 
-def create(client, scan: Scan):
+def create_many(client, scan: Scan):
         with client.session() as session:
             session.run(
                 "CREATE (scan:Scan {external_id: $external_id}) ",

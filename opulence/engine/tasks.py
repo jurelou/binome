@@ -26,6 +26,12 @@ def add_scan(case_id: uuid4, scan: Scan):
     scan_ctrl.create(scan)
     case_ctrl.add_scan(case_id, scan.external_id)
 
+@celery_app.task
+def launch_scan(scan_id: uuid4):
+    print(f"launch scan {scan_id}")
+
+    scan_ctrl.create(scan)
+    case_ctrl.add_scan(case_id, scan.external_id)
 
 
 # a = tasks.test_agent.apply_async().get()
