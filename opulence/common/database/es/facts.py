@@ -3,9 +3,17 @@ from elasticsearch.helpers import bulk
 from opulence.common.fact import all_facts
 
 replicas = 0
-refresh_interval = "30s"
+refresh_interval = "3s"
 
 gen_index_name = lambda name: f"facts_{name.lower()}"
+
+# def _refresh_indexes(client):
+#     indexes = ";".join([ gen_index_name(fact) for fact in all_facts.keys() ])
+#     print("@@@@", indexes)
+
+#     client.indices.refresh(index=indexes, allow_no_indices=True)
+
+
 
 
 def create_indexes(client):
@@ -18,7 +26,6 @@ def create_indexes(client):
             index=index_name,
             body={"refresh_interval": refresh_interval, "number_of_replicas": replicas},
         )
-
 
 def remove_indexes(client):
     for fact in all_facts.keys():
@@ -34,9 +41,10 @@ def bulk_upsert(client, facts):
                 "_op_type": "update",
                 "_index": gen_index_name(fact.schema()["title"]),
                 "_id": fact.hash__,
-                "doc": fact.dict(exclude={"hash__"}),
-                "doc_as_upsert": True,
+                "upsert": fact.dict(exclude={"hash__"}),
+                "doc": fact.dict(exclude={"first_seen", "hash__"})
             }
             print("Upsert to", gen_index_name(fact.schema()["title"]))
 
     bulk(client=client, actions=gen_actions(facts))
+

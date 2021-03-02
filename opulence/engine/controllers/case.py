@@ -11,7 +11,6 @@ from uuid import uuid4
 
 def create(case: Case):
     print("new case")
-    case.bite = "mdr"
     neo4j_cases.create(neo4j_client, case)
 
     print(f"Created case  {case}")

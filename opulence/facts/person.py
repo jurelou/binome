@@ -5,12 +5,13 @@ class Person(BaseFact):
     lastname: str
     firstname: str
 
-    def elastic_mapping():
-        return {
+    @classmethod
+    def elastic_mapping(cls):
+        return BaseFact.make_mapping({
             "mappings": {
                 "properties": {
-                    "lastname": {"type": "keyword",},
-                    "firstname": {"type": "keyword",},
+                    "lastname": {"type": "keyword"},
+                    "firstname": {"type": "keyword"},
                 },
-            },
-        }
+            }
+        })

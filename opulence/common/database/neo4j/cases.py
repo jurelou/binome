@@ -2,8 +2,8 @@ from opulence.engine.models.case import Case
 from opulence.engine.models.scan import Scan
 from uuid import uuid4
 
-def create(client, case: Case):
 
+def create(client, case: Case):
         with client.session() as session:
             session.run(
                 "CREATE (case: Case {external_id: $external_id}) "
