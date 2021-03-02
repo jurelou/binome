@@ -1,24 +1,25 @@
+from uuid import uuid4
+
 from opulence.engine.models.case import Case
 from opulence.engine.models.scan import Scan
-from uuid import uuid4
 
 
 def create(client, case: Case):
-        with client.session() as session:
-            session.run(
-                "CREATE (case: Case {external_id: $external_id}) "
-                "SET case += $data",
-                external_id=case.external_id.hex,
-                data=case.dict(exclude={"external_id"}),
-            )
+    with client.session() as session:
+        session.run(
+            "CREATE (case: Case {external_id: $external_id}) " "SET case += $data",
+            external_id=case.external_id.hex,
+            data=case.dict(exclude={"external_id"}),
+        )
+
 
 def add_scan(client, case_id: uuid4, scan_id: uuid4):
 
     with client.session() as session:
-            session.run(
-                "MATCH (case: Case), (scan: Scan) "
-                "WHERE case.external_id = $case_external_id AND scan.external_id = $scan_external_id "
-                "CREATE (case)-[r:LAUNCHES {name: 'yes'}]->(scan)",
-                case_external_id=case_id.hex,
-                scan_external_id=scan_id.hex,
-            )
+        session.run(
+            "MATCH (case: Case), (scan: Scan) "
+            "WHERE case.external_id = $case_external_id AND scan.external_id = $scan_external_id "
+            "CREATE (case)-[r:LAUNCHES {name: 'yes'}]->(scan)",
+            case_external_id=case_id.hex,
+            scan_external_id=scan_id.hex,
+        )

@@ -3,6 +3,6 @@ docker
 dynaconf
 elasticsearch==7.10.1
 httpx==0.16.1
+neo4j==4.2.1
 pydantic==1.7.3
 redis==3.5.3
-neo4j==4.2.1

@@ -36,5 +36,3 @@ relations = [{'from': 'man', 'to': 'woman', 'properties': {'cost': 0}},
 
 
 session.run(query, relations=relations)
-
-

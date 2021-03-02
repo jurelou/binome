@@ -1,23 +1,24 @@
 import hashlib
 import logging
+from time import time
 from typing import Optional
 
 from pydantic import BaseConfig
 from pydantic import BaseModel
-from pydantic import root_validator, Field
+from pydantic import Field
+from pydantic import root_validator
 
 from opulence.common.utils import load_classes_from_module
-from time import time
+
 logger = logging.getLogger(__name__)
 
 
 class BaseFact(BaseModel):
     __hash: Optional[str] = None
-    
-    
+
     first_seen: float = Field(default_factory=time)
     last_seen: float = Field(default_factory=time)
-    
+
     def __iter__(self):
         raise TypeError
 
@@ -26,6 +27,7 @@ class BaseFact(BaseModel):
         values.pop("hash__", None)
         m = hashlib.sha256()
         required_fields = cls.schema()["required"]
+
         for k in sorted(values):
             if k in required_fields:
                 m.update(str(k).encode() + str(values[k]).encode())
@@ -53,6 +55,7 @@ class BaseFact(BaseModel):
     @classmethod
     def elastic_mapping(cls):
         return BaseFact.make_mapping({"mappings": {"properties": {}}})
+
 
 def load_all_facts():
     facts_modules = load_classes_from_module("opulence/facts", BaseFact)

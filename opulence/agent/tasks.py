@@ -21,14 +21,14 @@ def scan(facts: List[BaseFact]):
         raise exceptions.CollectorNotFound(f"Collector {collector_name} not found.")
     if not all_collectors[collector_name]["active"]:
         raise exceptions.CollectorDisabled(
-            f"Collector {collector_name} is not enabled."
+            f"Collector {collector_name} is not enabled.",
         )
 
     collect_result = all_collectors[collector_name]["instance"].collect(facts)
     print("FOUND RES", collect_result)
     facts_index.bulk_upsert(es_client, collect_result.facts)
     result = collect_result.dict(exclude={"facts"})
-    result["facts"] = [ fact.hash__ for fact in collect_result.facts]
+    result["facts"] = [fact.hash__ for fact in collect_result.facts]
 
     return result
 

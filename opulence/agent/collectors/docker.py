@@ -22,7 +22,7 @@ class DockerConfig(BaseModel):
 
         if (not image and not build_context) or (image and build_context):
             raise ValueError(
-                "Docker config should contains one of `image` or `build_context`"
+                "Docker config should contains one of `image` or `build_context`",
             )
         return values
 
@@ -37,7 +37,7 @@ class DockerCollector(BaseCollector):
         self.__client = docker.from_env()
         if self.config.docker.build_context:
             self.__build_image(
-                self.config.docker.build_context, tag=f"opu_{self.config.name}"
+                self.config.docker.build_context, tag=f"opu_{self.config.name}",
             )
             self.__image = f"opu_{self.config.name}"
         else:
@@ -52,5 +52,5 @@ class DockerCollector(BaseCollector):
 
     def run_container(self, command: Union[str, List[str]], **kwargs):
         return self.__client.containers.run(
-            self.__image, command, detach=False, remove=True, **kwargs
+            self.__image, command, detach=False, remove=True, **kwargs,
         ).decode("utf-8")

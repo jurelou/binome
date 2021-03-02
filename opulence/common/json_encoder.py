@@ -1,11 +1,10 @@
 import json
+from uuid import UUID
 
 from opulence.common.fact import BaseFact
 from opulence.common.fact import all_facts
-from uuid import UUID
-from opulence.engine.models.scan import Scan
 from opulence.engine.models.case import Case
-
+from opulence.engine.models.scan import Scan
 
 
 class encode(json.JSONEncoder):
@@ -21,14 +20,14 @@ class encode(json.JSONEncoder):
         elif isinstance(obj, Scan):
             return {
                 "__type__": "__scan__",
-                "scan": obj.json()
+                "scan": obj.json(),
             }
         elif isinstance(obj, Case):
             return {
                 "__type__": "__case__",
-                "case": obj.json()
+                "case": obj.json(),
             }
- 
+
         return json.JSONEncoder.default(self, obj)
 
 

@@ -22,7 +22,7 @@ celery_app.conf.update(
         },
         "imports": "opulence.agent.tasks",
         "task_queues": queues,
-    }
+    },
 )
 celery_app.conf.update(agent_config.celery)
 

@@ -1,8 +1,12 @@
-from pydantic import BaseModel, Field, BaseConfig
-import uuid
-from opulence.common.fact import BaseFact
-from typing import List
 from time import time
+from typing import List
+import uuid
+
+from pydantic import BaseConfig
+from pydantic import BaseModel
+from pydantic import Field
+
+from opulence.common.fact import BaseFact
 
 
 class Scan(BaseModel):
@@ -10,7 +14,7 @@ class Scan(BaseModel):
     timestamp: float = Field(default_factory=time)
     scan_type: str
 
-    facts: List[BaseFact]
+    facts: List[BaseFact] = []
     # collector_name: str
 
     class Config(BaseConfig):

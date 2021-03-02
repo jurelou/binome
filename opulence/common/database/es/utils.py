@@ -10,7 +10,7 @@ logger = get_task_logger(__name__)
 
 kibana_index_patterns = ["facts_*"]
 kibana_index_patterns.extend(
-    [facts.gen_index_name(index) for index in all_facts.keys()]
+    [facts.gen_index_name(index) for index in all_facts.keys()],
 )
 
 
@@ -34,7 +34,7 @@ def create_kibana_patterns(es_client, kibana_url):
         )
         headers = {"kbn-xsrf": "yes", "Content-Type": "application/json"}
         data = {
-            "attributes": {"title": index_pattern,},
+            "attributes": {"title": index_pattern},
         }
         r = httpx.post(kibana_endpoint, json=data, headers=headers)
         print(f"Kibana create index pattern ({index_pattern}): {r.status_code}")
