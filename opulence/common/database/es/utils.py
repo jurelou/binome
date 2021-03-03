@@ -3,14 +3,14 @@ from elasticsearch import Elasticsearch
 import httpx
 
 from opulence.common.database.es import facts
-from opulence.common.fact import all_facts
+from opulence.facts import all_facts
 
 logger = get_task_logger(__name__)
 
 
 kibana_index_patterns = ["facts_*"]
 kibana_index_patterns.extend(
-    [facts.gen_index_name(index) for index in all_facts.keys()],
+    [facts.fact_to_index(index) for index in all_facts.keys()],
 )
 
 

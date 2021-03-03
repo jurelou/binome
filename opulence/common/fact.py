@@ -12,6 +12,10 @@ from opulence.common.utils import load_classes_from_module
 
 logger = logging.getLogger(__name__)
 
+# def load_all_facts():
+#     facts = {mod.schema()["title"]: mod for mod in load_classes_from_module("opulence/facts", BaseFact)}
+#     print(f"Loaded facts: {facts}")
+#     return facts
 
 class BaseFact(BaseModel):
     __hash: Optional[str] = None
@@ -38,6 +42,7 @@ class BaseFact(BaseModel):
         allow_population_by_alias = True
         extra = "allow"
 
+
     # @classmethod
     # def elastic_mapping(self, mapping=None):
     #     if map:
@@ -56,12 +61,7 @@ class BaseFact(BaseModel):
     def elastic_mapping(cls):
         return BaseFact.make_mapping({"mappings": {"properties": {}}})
 
-
-def load_all_facts():
-    facts_modules = load_classes_from_module("opulence/facts", BaseFact)
-    facts = {mod.schema()["title"].lower(): mod for mod in facts_modules}
-    logger.info(f"Loaded facts: {facts.keys()}")
-    return facts
-
-
-all_facts = load_all_facts()
+    @staticmethod
+    def from_obj(fact_type:str, data):
+        from opulence.facts import all_facts # pragma: nocover
+        return all_facts[fact_type](**data)

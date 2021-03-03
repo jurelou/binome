@@ -2,7 +2,7 @@ import json
 from uuid import UUID
 
 from opulence.common.fact import BaseFact
-from opulence.common.fact import all_facts
+from opulence.facts import all_facts
 from opulence.engine.models.case import Case
 from opulence.engine.models.scan import Scan
 

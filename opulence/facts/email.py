@@ -7,11 +7,5 @@ class Email(BaseFact):
     @classmethod
     def elastic_mapping(cls):
         return BaseFact.make_mapping(
-            {
-                "mappings": {
-                    "properties": {
-                        "address": {"type": "keyword"}
-                    },
-                },
-            },
+            {"mappings": {"properties": {"address": {"type": "keyword"},},},},
         )

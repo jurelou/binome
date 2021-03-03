@@ -39,7 +39,7 @@ def launch_scan(scan_id: uuid4):
     print(f"launch scan {scan_id}")
     a = scan_ctrl.get(scan_id)
 
-    print("AAAAAAA",a)
+    print("AAAAAAA", a)
     # scan_ctrl.create(scan)
     # case_ctrl.add_scan(case_id, scan.external_id)
 

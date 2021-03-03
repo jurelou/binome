@@ -1,13 +1,17 @@
+from typing import List
+from uuid import uuid4
+
 from elasticsearch.helpers import bulk
 
-from opulence.common.fact import all_facts
-from uuid import uuid4
-from typing import List
-
+from opulence.facts import all_facts
+from opulence.common.fact import BaseFact
 replicas = 0
 refresh_interval = "3s"
 
-gen_index_name = lambda name: f"facts_{name.lower()}"
+__facts_index_mapping = [(fact, f"facts_{fact.lower()}") for fact in all_facts.keys()]
+fact_to_index = lambda fact: [ index for f, index in __facts_index_mapping if f  == fact ][0]
+index_to_fact = lambda index: [ fact for fact, i in __facts_index_mapping if i  == index ][0]
+
 
 # def _refresh_indexes(client):
 #     indexes = ";".join([ gen_index_name(fact) for fact in all_facts.keys() ])
@@ -18,7 +22,7 @@ gen_index_name = lambda name: f"facts_{name.lower()}"
 
 def create_indexes(client):
     for fact, body in all_facts.items():
-        index_name = gen_index_name(fact)
+        index_name = fact_to_index(fact)
         client.indices.create(
             index=index_name, body=body.elastic_mapping(), ignore=400,
         )
@@ -30,9 +34,25 @@ def create_indexes(client):
 
 def remove_indexes(client):
     for fact in all_facts.keys():
-        index_name = gen_index_name(fact)
+        index_name = fact_to_index(fact)
         print(f"Remove index {index_name}")
         client.indices.delete(index=index_name, ignore=[404])
+
+def get_many(client, facts):
+    mapping = {}
+    for fact_type, fact_id in facts:
+        if fact_type not in mapping:
+            mapping[fact_type] = [fact_id]
+        else:
+            mapping[fact_type].append(fact_id)
+
+    facts = []
+    for fact_type in mapping.keys():
+        res = client.mget(
+            index=fact_to_index(fact_type), body={"ids": mapping[fact_type]}
+        )
+        facts.extend([ BaseFact.from_obj(fact_type=index_to_fact(doc["_index"]), data=doc["_source"]) for doc in res["docs"]])
+    return facts
 
 
 def bulk_upsert(client, facts):
@@ -40,27 +60,12 @@ def bulk_upsert(client, facts):
         for fact in facts:
             yield {
                 "_op_type": "update",
-                "_index": gen_index_name(fact.schema()["title"]),
+                "_index": fact_to_index(fact.schema()["title"]),
                 "_id": fact.hash__,
                 "upsert": fact.dict(exclude={"hash__"}),
                 "doc": fact.dict(exclude={"first_seen", "hash__"}),
             }
-            print("Upsert to", gen_index_name(fact.schema()["title"]))
+            print("Upsert to", fact_to_index(fact.schema()["title"]))
 
     bulk(client=client, actions=gen_actions(facts))
 
-
-def get_many(client, facts: List[uuid4]):
-    mapping = {}
-    for fact_id, fact_type in facts:
-        if fact_type not in mapping:
-            mapping[fact_type] = [fact_id]
-        else:
-            mapping[fact_type].append(fact_id)
-
-    result = []
-    for fact_type in mapping.keys():
-        res = client.mget(index=gen_index_name(fact_type), body = {'ids': mapping[fact_type]})
-        for r in res["docs"]:
-            result.append(r["_source"])
-    return result
