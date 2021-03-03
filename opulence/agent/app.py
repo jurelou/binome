@@ -1,12 +1,17 @@
 from celery.signals import worker_init
 from kombu import Queue
 
-from opulence.agent.controllers.collectors import all_collectors
 from opulence.common.celery import create_app
 from opulence.common.database.es.utils import create_client
 from opulence.config import agent_config
 
+from opulence.agent.collectors.factory import CollectorFactory
+
+all_collectors = CollectorFactory().build()
 queues = [Queue(collector) for collector in all_collectors.keys()]
+
+print("ALL collectors", all_collectors.keys())
+print(f"Queues: {queues}")
 
 
 # Create celery app

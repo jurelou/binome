@@ -4,17 +4,6 @@ from uuid import uuid4
 
 from opulence.engine.models.scan import Scan
 
-# def get_(client, scan_id: uuid4) -> Scan:
-#     with client.session() as session:
-#         scan = session.run(
-#                 "MATCH (scan: Scan) "
-#                 "WHERE scan.external_id=$external_id "
-#                 "RETURN DISTINCT scan",
-#                 external_id=scan_id.hex
-#         )
-#         scan = scan.single().data()["scan"]
-#     return Scan(**scan)
-
 
 def get_user_input_facts(client, scan_id: uuid4, include_scan=True):
     with client.session() as session:
@@ -24,12 +13,10 @@ def get_user_input_facts(client, scan_id: uuid4, include_scan=True):
             "RETURN DISTINCT fact, scan",
             external_id=scan_id.hex,
         )
-        # print("@@@@", scan.values())
 
         data = result.data()
-        print("@@@@@@@", data)
         scan = data[0]["scan"]
-        facts = [( item["fact"]["type"], item["fact"]["external_id"]) for item in data]
+        facts = [(item["fact"]["type"], item["fact"]["external_id"]) for item in data]
     return Scan(**scan), facts
 
 

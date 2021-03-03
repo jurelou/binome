@@ -3,14 +3,15 @@ from uuid import uuid4
 
 from elasticsearch.helpers import bulk
 
-from opulence.facts import all_facts
 from opulence.common.fact import BaseFact
+from opulence.facts import all_facts
+
 replicas = 0
 refresh_interval = "3s"
 
 __facts_index_mapping = [(fact, f"facts_{fact.lower()}") for fact in all_facts.keys()]
-fact_to_index = lambda fact: [ index for f, index in __facts_index_mapping if f  == fact ][0]
-index_to_fact = lambda index: [ fact for fact, i in __facts_index_mapping if i  == index ][0]
+fact_to_index = lambda fact: [i for f, i in __facts_index_mapping if f == fact][0]
+index_to_fact = lambda index: [f for f, i in __facts_index_mapping if i == index][0]
 
 
 # def _refresh_indexes(client):
@@ -38,6 +39,7 @@ def remove_indexes(client):
         print(f"Remove index {index_name}")
         client.indices.delete(index=index_name, ignore=[404])
 
+
 def get_many(client, facts):
     mapping = {}
     for fact_type, fact_id in facts:
@@ -49,9 +51,16 @@ def get_many(client, facts):
     facts = []
     for fact_type in mapping.keys():
         res = client.mget(
-            index=fact_to_index(fact_type), body={"ids": mapping[fact_type]}
+            index=fact_to_index(fact_type), body={"ids": mapping[fact_type]},
         )
-        facts.extend([ BaseFact.from_obj(fact_type=index_to_fact(doc["_index"]), data=doc["_source"]) for doc in res["docs"]])
+        facts.extend(
+            [
+                BaseFact.from_obj(
+                    fact_type=index_to_fact(doc["_index"]), data=doc["_source"],
+                )
+                for doc in res["docs"]
+            ],
+        )
     return facts
 
 
@@ -68,4 +77,3 @@ def bulk_upsert(client, facts):
             print("Upsert to", fact_to_index(fact.schema()["title"]))
 
     bulk(client=client, actions=gen_actions(facts))
-

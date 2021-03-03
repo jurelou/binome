@@ -2,9 +2,9 @@ import json
 from uuid import UUID
 
 from opulence.common.fact import BaseFact
-from opulence.facts import all_facts
 from opulence.engine.models.case import Case
 from opulence.engine.models.scan import Scan
+from opulence.facts import all_facts
 
 
 class encode(json.JSONEncoder):
@@ -13,7 +13,7 @@ class encode(json.JSONEncoder):
             return {
                 "__type__": "__fact__",
                 "fact": obj.json(),
-                "fact_type": type(obj).__name__.lower(),
+                "fact_type": obj.schema()["title"],
             }
         elif isinstance(obj, UUID):
             return {"__type__": "__uuid__", "uuid": obj.hex}

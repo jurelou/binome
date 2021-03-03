@@ -8,7 +8,6 @@ from pydantic import BaseModel
 from pydantic import Field
 from pydantic import root_validator
 
-from opulence.common.utils import load_classes_from_module
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +15,7 @@ logger = logging.getLogger(__name__)
 #     facts = {mod.schema()["title"]: mod for mod in load_classes_from_module("opulence/facts", BaseFact)}
 #     print(f"Loaded facts: {facts}")
 #     return facts
+
 
 class BaseFact(BaseModel):
     __hash: Optional[str] = None
@@ -42,7 +42,6 @@ class BaseFact(BaseModel):
         allow_population_by_alias = True
         extra = "allow"
 
-
     # @classmethod
     # def elastic_mapping(self, mapping=None):
     #     if map:
@@ -62,6 +61,6 @@ class BaseFact(BaseModel):
         return BaseFact.make_mapping({"mappings": {"properties": {}}})
 
     @staticmethod
-    def from_obj(fact_type:str, data):
-        from opulence.facts import all_facts # pragma: nocover
+    def from_obj(fact_type: str, data):
+        from opulence.facts import all_facts  # pragma: nocover
         return all_facts[fact_type](**data)

@@ -37,9 +37,8 @@ def add_scan(case_id: uuid4, scan: Scan):
 @celery_app.task
 def launch_scan(scan_id: uuid4):
     print(f"launch scan {scan_id}")
-    a = scan_ctrl.get(scan_id)
-
-    print("AAAAAAA", a)
+    scan = scan_ctrl.get(scan_id)
+    scan_ctrl.launch(scan)
     # scan_ctrl.create(scan)
     # case_ctrl.add_scan(case_id, scan.external_id)
 
@@ -55,15 +54,11 @@ def launch_scan(scan_id: uuid4):
 #   print("!!!!!!ENGINE TOTO")
 
 
-# a = signatures.launch_scan("a-collector", [Person(firstname="a", lastname="b")]).apply_async()
-# print("RESYULT", a.get())
-
 # from opulence.engine import remote_tasks
 # from opulence.facts.person import Person
 # from opulence.common.celery import sync_call
 # from opulence.agent import celery_app
 
-# from opulence.engine import celery_app as tutu
 
 
 # a = tutu.signature("agent_scan:agent.scan.launch", ["azeazeaze", Person(firstname="lol", lastname="mdr")])

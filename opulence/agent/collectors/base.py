@@ -99,6 +99,7 @@ class BaseCollector:
         start_time = timer()
 
         callbacks = self._prepare_callbacks(facts)
+        print("CALLBACKS", callbacks)
         facts = self._execute_callbacks(callbacks)
 
         return CollectResult(

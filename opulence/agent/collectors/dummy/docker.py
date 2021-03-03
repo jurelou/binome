@@ -17,5 +17,5 @@ class DummyDocker(DockerCollector):
 
     def cb(self, person):
         hello = self.run_container(command="--help")
-
+        print("exec docker collector")
         yield Person(firstname="dummy docker collector", lastname=hello)
