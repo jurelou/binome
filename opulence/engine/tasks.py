@@ -60,7 +60,6 @@ def launch_scan(scan_id: uuid4):
 # from opulence.agent import celery_app
 
 
-
 # a = tutu.signature("agent_scan:agent.scan.launch", ["azeazeaze", Person(firstname="lol", lastname="mdr")])
 
 # a.apply_async()

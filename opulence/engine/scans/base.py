@@ -1,7 +1,9 @@
 from typing import Optional
+
 from opulence.engine.models.scan import Scan
 
-class   BaseScan:
+
+class BaseScan:
     name: Optional[str] = None
 
     def __init__(self, config=None):

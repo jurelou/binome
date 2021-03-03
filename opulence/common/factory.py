@@ -1,4 +1,5 @@
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
 from importlib import import_module
 import inspect
 import os
@@ -7,8 +8,8 @@ import sys
 
 from opulence.common.singleton import Singleton
 
-class Factory(ABC, Singleton):
 
+class Factory(ABC, Singleton):
     @property
     def items(self):
         if hasattr(self, "_items"):
@@ -25,14 +26,13 @@ class Factory(ABC, Singleton):
 
     @staticmethod
     def _discover_packages(skip_first_level, path):
-            for (_, name, ispkg) in pkgutil.iter_modules([path]):
-                pkg_path = os.path.join(path, name)
-                if ispkg:
-                    yield from Factory._discover_packages(False, pkg_path)
-                    continue
-                if not skip_first_level:
-                    yield pkg_path.replace("/", ".")
-
+        for (_, name, ispkg) in pkgutil.iter_modules([path]):
+            pkg_path = os.path.join(path, name)
+            if ispkg:
+                yield from Factory._discover_packages(False, pkg_path)
+                continue
+            if not skip_first_level:
+                yield pkg_path.replace("/", ".")
 
     @staticmethod
     def load_classes_from_module(root_path, parent_class, skip_first_level=False):
@@ -47,8 +47,10 @@ class Factory(ABC, Singleton):
             else:
                 module = sys.modules[mod_path]
             for _, mod_cls in inspect.getmembers(module, inspect.isclass):
-                if mod_cls.__module__.startswith(mod_path) and issubclass(
-                    mod_cls, parent_class,
-                ) and parent_class != mod_cls:
+                if (
+                    mod_cls.__module__.startswith(mod_path)
+                    and issubclass(mod_cls, parent_class,)
+                    and parent_class != mod_cls
+                ):
                     modules.append(mod_cls)
         return modules

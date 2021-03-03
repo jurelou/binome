@@ -1,9 +1,8 @@
-from opulence.common.factory import Factory
 from opulence.common.fact import BaseFact
+from opulence.common.factory import Factory
 
 
 class FactFactory(Factory):
-
     def build(self):
         facts = {
             mod.schema()["title"]: mod
@@ -11,5 +10,3 @@ class FactFactory(Factory):
         }
         self.items = facts
         return facts
-        
-

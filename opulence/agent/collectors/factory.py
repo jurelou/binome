@@ -1,13 +1,9 @@
-from opulence.common.factory import Factory
 from opulence.agent.collectors.base import BaseCollector
-
+from opulence.common.factory import Factory
 from opulence.config import agent_config
 
 
-
 class CollectorFactory(Factory):
-
-
     def build(self):
         collector_modules = self.load_classes_from_module(
             root_path="opulence/agent/collectors",
@@ -36,5 +32,3 @@ class CollectorFactory(Factory):
 
         self.items = collector_instances
         return collector_instances
-        
-

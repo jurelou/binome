@@ -5,15 +5,14 @@ from celery.utils.log import get_task_logger
 
 from opulence.agent.app import celery_app
 from opulence.agent.app import es_client
+from opulence.agent.collectors.factory import CollectorFactory
 from opulence.agent import exceptions
 from opulence.common.database.es import facts as facts_index
 from opulence.common.fact import BaseFact
-from opulence.agent.collectors.factory import CollectorFactory
 
 logger = get_task_logger(__name__)
 
 all_collectors = CollectorFactory().items
-
 
 
 @celery_app.task(name="scan", throws=(exceptions.BaseAgentException))

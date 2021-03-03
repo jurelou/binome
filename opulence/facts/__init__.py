@@ -1,5 +1,6 @@
 from opulence.facts.factory import FactFactory
 
+
 def load_all_facts():
     facts = {
         mod.schema()["title"]: mod

@@ -19,7 +19,6 @@ def add_scan(case_id: uuid4, scan_id: uuid4):
     neo4j_cases.add_scan(neo4j_client, case_id=case_id, scan_id=scan_id)
 
 
-
 # from opulence.common.database.neo4j import scans as neo4j_scans
 # from opulence.engine.app import neo4j_client
 

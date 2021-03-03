@@ -8,7 +8,6 @@ from pydantic import BaseModel
 from pydantic import Field
 from pydantic import root_validator
 
-
 logger = logging.getLogger(__name__)
 
 # def load_all_facts():
@@ -63,4 +62,5 @@ class BaseFact(BaseModel):
     @staticmethod
     def from_obj(fact_type: str, data):
         from opulence.facts import all_facts  # pragma: nocover
+
         return all_facts[fact_type](**data)

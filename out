@@ -28,114 +28,114 @@
 [2021-03-03 23:11:53,701: WARNING/MainProcess] launch scan
 [2021-03-03 23:11:53,711: INFO/MainProcess] Task opulence.engine.tasks.launch_scan[821318bd-1bd6-4e6a-9c79-6b35a402a136] succeeded in 0.02861515001859516s: None
 [2021-03-03 23:11:53,712: INFO/MainProcess] celery@engine ready.
-[2021-03-03 23:11:53,715: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[0d7def94-a108-40f3-98dd-1a0998ed1d8d]  
+[2021-03-03 23:11:53,715: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[0d7def94-a108-40f3-98dd-1a0998ed1d8d]
 [2021-03-03 23:11:53,717: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:11:53,718: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:11:54,777: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:11:54,780: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[0d7def94-a108-40f3-98dd-1a0998ed1d8d] succeeded in 1.0625797839602455s: None
 [2021-03-03 23:11:55,007: INFO/MainProcess] Events of group {task} enabled by remote.
-[2021-03-03 23:11:56,063: INFO/MainProcess] Received task: opulence.engine.controllers.agent_tasks.scan_success[dd312300-90fa-4411-b017-a0bd9b99bc78]  
+[2021-03-03 23:11:56,063: INFO/MainProcess] Received task: opulence.engine.controllers.agent_tasks.scan_success[dd312300-90fa-4411-b017-a0bd9b99bc78]
 [2021-03-03 23:11:56,065: WARNING/ForkPoolWorker-9] SUCCESS
 [2021-03-03 23:11:56,066: WARNING/ForkPoolWorker-9] {'collector_config': {'name': 'dummy-docker-collector', 'docker': {'image': None, 'build_context': '/home/louis/binome/opulence/agent/collectors/dummy'}}, 'duration': 2.332433092989959, 'executions_count': 2, 'facts': ['10c0b77c71b7b310c63dc3fe6824641bde75128543ca878d60a1b31dd31194ac', '10c0b77c71b7b310c63dc3fe6824641bde75128543ca878d60a1b31dd31194ac']}
 [2021-03-03 23:11:56,066: INFO/ForkPoolWorker-9] Task opulence.engine.controllers.agent_tasks.scan_success[dd312300-90fa-4411-b017-a0bd9b99bc78] succeeded in 0.00034186302218586206s: None
 [2021-03-03 23:11:57,447: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:11:57,449: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[e01f48cd-cadf-4720-9492-2cbd7a379696]  
+[2021-03-03 23:11:57,449: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[e01f48cd-cadf-4720-9492-2cbd7a379696]
 [2021-03-03 23:11:57,450: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:11:57,450: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:11:58,458: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:11:58,461: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[e01f48cd-cadf-4720-9492-2cbd7a379696] succeeded in 1.0110371869523078s: None
 [2021-03-03 23:12:02,447: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:02,455: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[050428c9-7661-458e-869f-ebcecee3713b]  
+[2021-03-03 23:12:02,455: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[050428c9-7661-458e-869f-ebcecee3713b]
 [2021-03-03 23:12:02,460: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:02,461: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:03,473: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:03,476: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[050428c9-7661-458e-869f-ebcecee3713b] succeeded in 1.015926772961393s: None
 [2021-03-03 23:12:07,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:07,456: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[52b15317-98a4-4064-8689-12330fc15504]  
+[2021-03-03 23:12:07,456: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[52b15317-98a4-4064-8689-12330fc15504]
 [2021-03-03 23:12:07,461: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:07,461: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:08,481: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:08,485: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[52b15317-98a4-4064-8689-12330fc15504] succeeded in 1.024375758948736s: None
 [2021-03-03 23:12:12,447: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:12,450: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[b2ee84f8-3e68-4899-a53f-8d6bf07f51a1]  
+[2021-03-03 23:12:12,450: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[b2ee84f8-3e68-4899-a53f-8d6bf07f51a1]
 [2021-03-03 23:12:12,451: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:12,451: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:13,459: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:13,462: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[b2ee84f8-3e68-4899-a53f-8d6bf07f51a1] succeeded in 1.0103456439683214s: None
 [2021-03-03 23:12:17,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:17,453: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[36f25294-a266-4649-ac29-aa28a1137f14]  
+[2021-03-03 23:12:17,453: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[36f25294-a266-4649-ac29-aa28a1137f14]
 [2021-03-03 23:12:17,458: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:17,459: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:18,474: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:18,476: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[36f25294-a266-4649-ac29-aa28a1137f14] succeeded in 1.0183215630240738s: None
 [2021-03-03 23:12:22,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:22,453: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[a23f44c1-5146-4c41-bca4-e36c39f1053b]  
+[2021-03-03 23:12:22,453: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[a23f44c1-5146-4c41-bca4-e36c39f1053b]
 [2021-03-03 23:12:22,460: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:22,460: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:23,476: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:23,479: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[a23f44c1-5146-4c41-bca4-e36c39f1053b] succeeded in 1.0199706299463287s: None
 [2021-03-03 23:12:27,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:27,454: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[3325d4f9-5c6c-45de-96a2-8b7d4381d2ab]  
+[2021-03-03 23:12:27,454: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[3325d4f9-5c6c-45de-96a2-8b7d4381d2ab]
 [2021-03-03 23:12:27,459: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:27,460: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:28,471: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:28,473: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[3325d4f9-5c6c-45de-96a2-8b7d4381d2ab] succeeded in 1.0139357650186867s: None
 [2021-03-03 23:12:32,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:32,450: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[31ba1889-99dd-41ec-ae87-3d507c3388d4]  
+[2021-03-03 23:12:32,450: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[31ba1889-99dd-41ec-ae87-3d507c3388d4]
 [2021-03-03 23:12:32,452: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:32,452: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:33,462: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:33,464: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[31ba1889-99dd-41ec-ae87-3d507c3388d4] succeeded in 1.0121995280496776s: None
 [2021-03-03 23:12:37,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:37,453: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[da2dbbe4-e1b0-4691-a8be-07e230c08586]  
+[2021-03-03 23:12:37,453: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[da2dbbe4-e1b0-4691-a8be-07e230c08586]
 [2021-03-03 23:12:37,457: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:37,457: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:38,470: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:38,472: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[da2dbbe4-e1b0-4691-a8be-07e230c08586] succeeded in 1.0154954970348626s: None
 [2021-03-03 23:12:42,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:42,455: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[846f5bcf-6253-4a1a-b779-4c285e37f26d]  
+[2021-03-03 23:12:42,455: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[846f5bcf-6253-4a1a-b779-4c285e37f26d]
 [2021-03-03 23:12:42,460: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:42,460: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:43,479: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:43,483: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[846f5bcf-6253-4a1a-b779-4c285e37f26d] succeeded in 1.0235144139733166s: None
 [2021-03-03 23:12:47,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:47,451: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[d4e767fc-f894-4a1f-941b-c54b4b704784]  
+[2021-03-03 23:12:47,451: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[d4e767fc-f894-4a1f-941b-c54b4b704784]
 [2021-03-03 23:12:47,454: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:47,454: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:48,464: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:48,467: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[d4e767fc-f894-4a1f-941b-c54b4b704784] succeeded in 1.0132383089512587s: None
 [2021-03-03 23:12:52,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:52,455: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[2a749fa2-5c39-4a97-8a23-0a93094248f3]  
+[2021-03-03 23:12:52,455: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[2a749fa2-5c39-4a97-8a23-0a93094248f3]
 [2021-03-03 23:12:52,462: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:52,462: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:53,483: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:53,487: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[2a749fa2-5c39-4a97-8a23-0a93094248f3] succeeded in 1.0252559690270573s: None
 [2021-03-03 23:12:57,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:12:57,456: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[603c55db-107f-4159-93f8-7f81d1f73362]  
+[2021-03-03 23:12:57,456: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[603c55db-107f-4159-93f8-7f81d1f73362]
 [2021-03-03 23:12:57,460: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:12:57,461: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:12:58,477: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:12:58,480: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[603c55db-107f-4159-93f8-7f81d1f73362] succeeded in 1.0202789369504899s: None
 [2021-03-03 23:13:02,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:13:02,454: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[77cddd6e-dcac-4427-9287-f95bb4056d6f]  
+[2021-03-03 23:13:02,454: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[77cddd6e-dcac-4427-9287-f95bb4056d6f]
 [2021-03-03 23:13:02,457: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:13:02,458: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:13:03,467: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:13:03,469: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[77cddd6e-dcac-4427-9287-f95bb4056d6f] succeeded in 1.0117293189978227s: None
 [2021-03-03 23:13:07,448: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:13:07,451: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[e5cffe49-82dd-431b-ab86-026ecd3cdeee]  
+[2021-03-03 23:13:07,451: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[e5cffe49-82dd-431b-ab86-026ecd3cdeee]
 [2021-03-03 23:13:07,453: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:13:07,454: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:13:08,463: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:13:08,467: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[e5cffe49-82dd-431b-ab86-026ecd3cdeee] succeeded in 1.0132525380467996s: None
 [2021-03-03 23:13:12,449: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:13:12,454: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[79850218-ecdd-42aa-944f-1fe3d47e3802]  
+[2021-03-03 23:13:12,454: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[79850218-ecdd-42aa-944f-1fe3d47e3802]
 [2021-03-03 23:13:12,458: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:13:12,459: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:13:13,470: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])
 [2021-03-03 23:13:13,471: INFO/ForkPoolWorker-9] Task opulence.engine.tasks.reload_agents[79850218-ecdd-42aa-944f-1fe3d47e3802] succeeded in 1.012752606999129s: None
 [2021-03-03 23:13:17,449: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (opulence.engine.tasks.reload_agents)
-[2021-03-03 23:13:17,455: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[d6607092-62c7-48c9-b37f-7fb0036d9730]  
+[2021-03-03 23:13:17,455: INFO/MainProcess] Received task: opulence.engine.tasks.reload_agents[d6607092-62c7-48c9-b37f-7fb0036d9730]
 [2021-03-03 23:13:17,458: WARNING/ForkPoolWorker-9] YO
 [2021-03-03 23:13:17,458: WARNING/ForkPoolWorker-9] go
 [2021-03-03 23:13:18,470: WARNING/ForkPoolWorker-9] Available agents: dict_keys([])

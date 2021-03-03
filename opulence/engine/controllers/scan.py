@@ -24,6 +24,7 @@ def get(scan_id: uuid4):
     scan.facts = fact_ctrl.get_many(facts)
     return scan
 
+
 def launch(scan: Scan):
     print("launch scan", scan, all_scans)
     if scan.scan_type not in all_scans:

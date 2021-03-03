@@ -31,4 +31,3 @@ def make_list(data):
     if not is_list(data):
         return [data]
     return data
-
