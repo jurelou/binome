@@ -1,6 +1,6 @@
 from celery.signals import worker_init
 from kombu import Queue
-
+from loguru import logger
 from opulence.agent.collectors.factory import CollectorFactory
 from opulence.common.celery import create_app
 from opulence.common.database.es.utils import create_client
@@ -8,9 +8,6 @@ from opulence.config import agent_config
 
 all_collectors = CollectorFactory().build()
 queues = [Queue(collector) for collector in all_collectors.keys()]
-
-print("ALL collectors", all_collectors.keys())
-print(f"Queues: {queues}")
 
 
 # Create celery app
@@ -35,6 +32,8 @@ celery_app.conf.update(agent_config.celery)
 es_client = create_client(agent_config.elasticsearch)
 
 
-@worker_init.connect
-def startup(sender=None, conf=None, **kwargs):
-    pass
+#@worker_init.connect
+#def startup(sender=None, conf=None, **kwargs):
+#    pass
+
+

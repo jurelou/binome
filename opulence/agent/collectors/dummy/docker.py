@@ -1,7 +1,7 @@
 from opulence.agent.collectors.docker import DockerCollector
 from opulence.common.utils import get_actual_dir
 from opulence.facts.person import Person
-
+from opulence.facts.email import Email
 
 class DummyDocker(DockerCollector):
     config = {
@@ -19,3 +19,4 @@ class DummyDocker(DockerCollector):
         hello = self.run_container(command="--help")
         print("exec docker collector")
         yield Person(firstname="dummy docker collector", lastname=hello)
+        yield Email(address="yes")

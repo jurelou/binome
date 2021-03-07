@@ -6,6 +6,14 @@ celery:
     result_backend: redis://localhost/1
     task_ignore_result: False
 
+    redbeat_redis_url: redis://localhost/2
+    beat_scheduler : redbeat.RedBeatScheduler
+
+    beat_max_loop_interval: 5
+    beat_schedule: {}
+
+
+
 kibana:
     url: http://localhost:5601
 
@@ -18,3 +26,8 @@ neo4j:
     endpoint: bolt://localhost:7687
     username: neo4j
     password: root
+    
+# mongodb:
+#     endpoint: mongodb://localhost:27017
+    # username: root
+    # password: rootroot

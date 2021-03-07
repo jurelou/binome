@@ -1,8 +1,7 @@
-import logging
-import sys
 
+import sys
 import celery
-from celery.signals import after_setup_logger
+from celery.signals import after_setup_logger, setup_logging
 from kombu.serialization import register
 
 from opulence.common import json_encoder
@@ -41,11 +40,18 @@ def create_app():
             "accept_content": ["customEncoder", "application/json"],
             "task_serializer": "customEncoder",
             "result_serializer": "customEncoder",
+            'worker_hijack_root_logger': False
         },
     )
 
+
     return celery_app
 
+
+@setup_logging.connect
+def on_celery_setup_logging(**kwargs):
+
+        pass
 
 # @after_setup_logger.connect
 # def setup_loggers(logger, *args, **kwargs):
@@ -58,9 +64,5 @@ def create_app():
 
 
 def async_call(app, task_path, **kwargs):
-    # try:
     return app.send_task(task_path, **kwargs)
 
-
-# except celery.exceptions.TimeoutError:
-#     raise TaskTimeoutError("{}".format(task_path))

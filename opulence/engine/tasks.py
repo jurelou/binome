@@ -1,29 +1,50 @@
 from uuid import uuid4
-
+from celery.schedules import  schedule
 from opulence.engine.app import celery_app
+from opulence.config import engine_config
 from opulence.engine.controllers import agents as agents_ctrl
 from opulence.engine.controllers import case as case_ctrl
 from opulence.engine.controllers import fact as fact_ctrl
 from opulence.engine.controllers import scan as scan_ctrl
+from opulence.engine.controllers import periodic_tasks
+
+
 from opulence.engine.models.case import Case
 from opulence.engine.models.scan import Scan
+from loguru import logger
+
+
+
+@celery_app.task
+def toto():
+    print("TOTO Task")
+
+
+@celery_app.task
+def configure_periodic_tasks():
+    print("conf periodic Task")
+
+    periodic_tasks.add_periodic_task(app=celery_app, interval=schedule(run_every=engine_config.refresh_agents_interval), task_path='opulence.engine.tasks.reload_agents')
+
+
+
 
 
 @celery_app.task
 def reload_agents():
-    print("YO")
+    logger.debug("Reloading agents")
     agents_ctrl.refresh_agents()
 
 
 @celery_app.task
 def add_case(case: Case):
-    print("new case")
+    logger.debug(f"Add new case: {case}")
     case_ctrl.create(case)
 
 
 @celery_app.task
 def add_scan(case_id: uuid4, scan: Scan):
-    print("new scan")
+    logger.debug(f"Add scan {scan} to case {case_id}")
 
     scan_ctrl.create(scan)
     case_ctrl.add_scan(case_id, scan.external_id)
@@ -36,11 +57,12 @@ def add_scan(case_id: uuid4, scan: Scan):
 
 @celery_app.task
 def launch_scan(scan_id: uuid4):
-    print(f"launch scan {scan_id}")
+    logger.debug(f"Launch scan {scan_id}")
     scan = scan_ctrl.get(scan_id)
     scan_ctrl.launch(scan)
     # scan_ctrl.create(scan)
     # case_ctrl.add_scan(case_id, scan.external_id)
+
 
 
 # a = tasks.test_agent.apply_async().get()

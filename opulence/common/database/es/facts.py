@@ -1,6 +1,6 @@
 from typing import List
 from uuid import uuid4
-
+from loguru import logger
 from elasticsearch.helpers import bulk
 
 from opulence.common.fact import BaseFact
@@ -24,6 +24,7 @@ index_to_fact = lambda index: [f for f, i in __facts_index_mapping if i == index
 def create_indexes(client):
     for fact, body in all_facts.items():
         index_name = fact_to_index(fact)
+        logger.info(f"Create index {index_name}")
         client.indices.create(
             index=index_name, body=body.elastic_mapping(), ignore=400,
         )
@@ -36,7 +37,7 @@ def create_indexes(client):
 def remove_indexes(client):
     for fact in all_facts.keys():
         index_name = fact_to_index(fact)
-        print(f"Remove index {index_name}")
+        logger.info(f"Remove index {index_name}")
         client.indices.delete(index=index_name, ignore=[404])
 
 
@@ -49,9 +50,10 @@ def get_many(client, facts):
             mapping[fact_type].append(fact_id)
 
     facts = []
-    for fact_type in mapping.keys():
+    for fact_type, ids in mapping.items():
+        logger.info(f"Get {fact_type}: {ids}")
         res = client.mget(
-            index=fact_to_index(fact_type), body={"ids": mapping[fact_type]},
+            index=fact_to_index(fact_type), body={"ids": ids},
         )
         facts.extend(
             [
@@ -67,6 +69,7 @@ def get_many(client, facts):
 def bulk_upsert(client, facts):
     def gen_actions(facts):
         for fact in facts:
+            logger.info(f"Upsert fact: {fact.hash__}")
             yield {
                 "_op_type": "update",
                 "_index": fact_to_index(fact.schema()["title"]),
@@ -74,6 +77,5 @@ def bulk_upsert(client, facts):
                 "upsert": fact.dict(exclude={"hash__"}),
                 "doc": fact.dict(exclude={"first_seen", "hash__"}),
             }
-            print("Upsert to", fact_to_index(fact.schema()["title"]))
 
     bulk(client=client, actions=gen_actions(facts))

@@ -1,0 +1,12 @@
+celery:
+    broker_url: redis://localhost/0
+    result_backend: redis://localhost/0
+
+collectors:
+    - b-collector
+    - dummy-docker-collector
+
+elasticsearch:
+    endpoint:
+        host: localhost
+        port: 9200

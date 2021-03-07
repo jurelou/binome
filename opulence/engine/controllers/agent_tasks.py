@@ -5,16 +5,16 @@ from celery.result import allow_join_result
 from opulence.common.celery import async_call
 from opulence.common.fact import BaseFact
 from opulence.engine.app import celery_app
-
+from loguru import logger
 
 @celery_app.task(ignore_result=True, acks_late=True)
 def scan_success(result, collector_name, facts):
-    print("SUCCESS", result)
+    logger.info(f"Task success: {result}")
 
 
 @celery_app.task
 def scan_error(task_id, collector_name):
-    print("ERRORRRRRR")
+    logger.error(f"Task {task_id} error")
     # with allow_join_result():
     #     print("ERROR", task_id, collector_name)
     # result = celery_app.AsyncResult(task_id)
@@ -33,8 +33,7 @@ def scan_error(task_id, collector_name):
 
 
 def scan(collector_name: str, facts: List[BaseFact]):
-    print("launch scan")
-
+    logger.info(f"Collecting {collector_name} with {len(facts)} facts")
     task = async_call(
         celery_app,
         "scan",
