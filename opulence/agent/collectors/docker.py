@@ -32,6 +32,7 @@ class BaseDockerConfig(BaseConfig):
 
 
 class DockerCollector(BaseCollector):
+
     def configure(self):
         self.config = BaseDockerConfig(**self.config)
         self.__client = docker.from_env()

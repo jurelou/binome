@@ -21,19 +21,17 @@ def toto():
 
 
 @celery_app.task
-def configure_periodic_tasks():
-    print("conf periodic Task")
-
+def reload_periodic_tasks():
+    periodic_tasks.flush()
     periodic_tasks.add_periodic_task(app=celery_app, interval=schedule(run_every=engine_config.refresh_agents_interval), task_path='opulence.engine.tasks.reload_agents')
-
-
-
 
 
 @celery_app.task
 def reload_agents():
     logger.debug("Reloading agents")
     agents_ctrl.refresh_agents()
+
+
 
 
 @celery_app.task
@@ -52,16 +50,29 @@ def add_scan(case_id: uuid4, scan: Scan):
     fact_ctrl.add_many(scan.facts)
     facts_ids = [fact.hash__ for fact in scan.facts]
 
-    scan_ctrl.add_facts(scan.external_id, facts_ids)
+    scan_ctrl.add_user_input_facts(scan.external_id, facts_ids)
 
 
 @celery_app.task
 def launch_scan(scan_id: uuid4):
     logger.debug(f"Launch scan {scan_id}")
-    scan = scan_ctrl.get(scan_id)
-    scan_ctrl.launch(scan)
+
+    try:
+        scan = scan_ctrl.get(scan_id)
+        scan_ctrl.launch(scan)
+
+    except Exception as err:
+        import sys, traceback
+        traceback.print_exc(file=sys.stdout)
+        logger.critical(err)
     # scan_ctrl.create(scan)
     # case_ctrl.add_scan(case_id, scan.external_id)
+
+@celery_app.task
+def schedule_scan(scan_id: uuid4):
+    logger.debug(f"Schedule scan {scan_id}")
+    scan = scan_ctrl.get(scan_id)
+    scan_ctrl.schedule(scan)
 
 
 

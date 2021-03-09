@@ -13,12 +13,17 @@ class CollectorFactory(Factory):
 
         collector_instances = {}
         for collector in collector_modules:
-            collector_instance = collector()
+            try:
+                collector_instance = collector()
+            except Exception as err:
+                logger.critical(f"Could not load {collector}: {err}")
+                continue
             collector_name = collector_instance.config.name
             if collector_name in collector_instances:
                 raise InvalidCollectorDefinition(
                     f"Found collector with duplicate name `{collector_name}`.",
                 )
+            logger.info(f"Loaded collector {collector_name} with config: {collector_instance.config}")
             collector_instances[collector_name] = {
                 "instance": collector_instance,
                 "active": False,
@@ -32,5 +37,5 @@ class CollectorFactory(Factory):
 
         self.items = collector_instances
         for name, conf in collector_instances.items():
-            logger.info("Loaded collector {name} (active: {conf['active']})")
+            logger.info(f"Loaded collector {name} (active: {conf['active']})")
         return collector_instances

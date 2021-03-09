@@ -1,6 +1,6 @@
 from functools import partial
 
-
+import re
 # from opulence.agent.collectors.dependencies import Dependency
 from timeit import default_timer as timer
 from typing import Callable
@@ -12,6 +12,7 @@ from typing import Union
 
 from pydantic import BaseModel
 from pydantic import ValidationError
+from pydantic import root_validator
 
 from loguru import logger
 from opulence.agent.collectors.exceptions import CollectorRuntimeError
@@ -22,14 +23,29 @@ from opulence.common.utils import make_list
 
 
 
-
 # class CollectItem(BaseModel):
 #     pass
 
+# class Schedule(BaseModel):
+#     minute: Union[str, int] = "*"
+#     hour: Union[str, int] = "*"
+#     day_of_week: Union[str, int] = "*"
+#     day_of_month: Union[str, int] = "*"
+#     month_of_year: Union[str, int] = "*"
 
 class BaseConfig(BaseModel):
     name: str
 
+    # periodic: bool = False
+    # schedule: Optional[Schedule] = None
+
+    # @root_validator
+    # def check_schedule(cls, values):
+    #     is_periodic = values.get('periodic')
+    #     if is_periodic:
+    #         if not values.get('schedule'):
+    #             raise ValueError(f'Schedule should be set for collector {values.get("name")}')
+    #     return values
 
 class CollectResult(BaseModel):
     collector_config: BaseConfig
@@ -61,12 +77,13 @@ class BaseCollector:
             f"Collector {type(self).__name__} does not have any callbacks",
         )
 
-    @staticmethod
-    def _sanitize_output(fn):
+    def _sanitize_output(self, fn):
         try:
             output = make_list(fn())
-            if output:
-                for out in output:
+            output = list(filter(None, output)) 
+            if not output:
+                return []
+            for out in output:
                     if isinstance(out, BaseFact):
                         yield out
                     else:
@@ -94,7 +111,7 @@ class BaseCollector:
         facts = []
         for cb in callbacks:
             facts.extend(list(self._sanitize_output(cb)))
-        return facts or None
+        return facts
 
     def collect(self, facts: List[BaseFact]) -> Iterator[BaseFact]:
         start_time = timer()
@@ -104,10 +121,15 @@ class BaseCollector:
         logger.info(f"Execute collector {self.config.name} with {len(facts)} facts and {len(callbacks)} callbacks")
 
         output_facts = self._execute_callbacks(callbacks)
-
         return CollectResult(
             collector_config=self.config,
             duration=timer() - start_time,
             executions_count=len(callbacks),
             facts=output_facts,
         )
+
+    @staticmethod
+    def findall_regex(data, regex):
+        for item in re.findall(regex, data):
+            if item:
+                yield item

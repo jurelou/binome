@@ -7,10 +7,18 @@ from opulence.common.fact import BaseFact
 from opulence.engine.app import celery_app
 from loguru import logger
 
-@celery_app.task(ignore_result=True, acks_late=True)
-def scan_success(result, collector_name, facts):
-    logger.info(f"Task success: {result}")
+from opulence.engine.controllers.scan import add_facts
+# from opulence.engine.controllers.fact import add_many
 
+@celery_app.task(ignore_result=True, acks_late=True)
+def scan_success(result, scan_id):
+    try:
+        logger.info(f"Task success: got {len(result['facts'])} facts in {result['duration']}")
+        # print(result)
+        # add_many()
+        add_facts(scan_id, result["facts"])
+    except Exception as err:
+        logger.critical(err)
 
 @celery_app.task
 def scan_error(task_id, collector_name):
@@ -32,12 +40,12 @@ def scan_error(task_id, collector_name):
     #     raise job_error.retry(countdown=5, max_retries=3, exc=e)
 
 
-def scan(collector_name: str, facts: List[BaseFact]):
+def scan(scan_id, collector_name: str, facts: List[BaseFact]):
     logger.info(f"Collecting {collector_name} with {len(facts)} facts")
     task = async_call(
         celery_app,
         "scan",
-        link=scan_success.signature([collector_name, facts]),
+        link=scan_success.signature([scan_id]),
         link_error=scan_error.signature([collector_name]),
         queue=collector_name,
         args=[facts],

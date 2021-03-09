@@ -2,13 +2,24 @@ from typing import Optional
 
 from opulence.engine.models.scan import Scan
 
+from pydantic import BaseModel
+from opulence.common.fact import BaseFact
+from typing import List
+import uuid
+
+class   BaseScanConfig(BaseModel):
+    external_id: uuid.UUID
+    facts: List[BaseFact]
 
 class BaseScan:
     name: Optional[str] = None
 
-    def __init__(self, config=None):
+    def __init__(self):
         if not self.name:
             raise ValueError(f"{type(self).__name__} should contain a `name` property")
 
-    def launch(self, scan: Scan):
+    def configure(self, config):
+        pass
+
+    def launch(self, facts):
         print("LAUNCH")

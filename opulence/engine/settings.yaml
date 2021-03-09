@@ -9,10 +9,6 @@ celery:
     redbeat_redis_url: redis://localhost/2
     beat_scheduler : redbeat.RedBeatScheduler
 
-    beat_max_loop_interval: 5
-    beat_schedule: {}
-
-
 
 kibana:
     url: http://localhost:5601

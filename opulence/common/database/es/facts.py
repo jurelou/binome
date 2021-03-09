@@ -67,9 +67,9 @@ def get_many(client, facts):
 
 
 def bulk_upsert(client, facts):
-    def gen_actions(facts):
+    def gen_actions(facts):    
+        logger.info(f"Upsert fact: {len(facts)}")
         for fact in facts:
-            logger.info(f"Upsert fact: {fact.hash__}")
             yield {
                 "_op_type": "update",
                 "_index": fact_to_index(fact.schema()["title"]),

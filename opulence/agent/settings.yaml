@@ -3,8 +3,10 @@ celery:
     result_backend: redis://localhost/0
 
 collectors:
-    - b-collector
     - dummy-docker-collector
+    - recon-ng
+    - Certificate transparency
+    - nmap
 
 elasticsearch:
     endpoint:

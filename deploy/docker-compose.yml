@@ -33,8 +33,16 @@ services:
     ports:
       - 127.0.0.1:7474:7474
       - 127.0.0.1:7687:7687
+    volumes:
+      - neo_data:/data
+      - neo_plugins:/plugins
     environment:
       NEO4J_AUTH: neo4j/root
+      NEO4J_apoc_export_file_enabled: "true"
+      NEO4J_apoc_import_file_enabled: "true"
+      NEO4J_apoc_import_file_use__neo4j__config: "true"
+      NEO4JLABS_PLUGINS: '["apoc"]'
+
 
 ########################
 ##  KIBANA
@@ -111,4 +119,8 @@ networks:
 
 volumes:
   elastic:
+    driver: local
+  neo_data:
+    driver: local
+  neo_plugins:
     driver: local
