@@ -1,12 +1,14 @@
-from opulence.common.fact import BaseFact
 import ipaddress
+
 from pydantic import validator
+
+from opulence.common.fact import BaseFact
 
 
 class IPv4(BaseFact):
     address: str
 
-    @validator('address')
+    @validator("address")
     def check_valid_ipv4(cls, v):
         try:
             ipaddress.IPv4Address(v)

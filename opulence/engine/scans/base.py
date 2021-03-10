@@ -1,15 +1,17 @@
-from typing import Optional
-
-from opulence.engine.models.scan import Scan
-
-from pydantic import BaseModel
-from opulence.common.fact import BaseFact
 from typing import List
+from typing import Optional
 import uuid
 
-class   BaseScanConfig(BaseModel):
+from pydantic import BaseModel
+
+from opulence.common.fact import BaseFact
+from opulence.engine.models.scan import Scan
+
+
+class BaseScanConfig(BaseModel):
     external_id: uuid.UUID
     facts: List[BaseFact]
+
 
 class BaseScan:
     name: Optional[str] = None

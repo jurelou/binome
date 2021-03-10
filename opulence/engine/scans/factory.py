@@ -1,7 +1,9 @@
+from loguru import logger
+
 from opulence.common.fact import BaseFact
 from opulence.common.factory import Factory
 from opulence.engine.scans.base import BaseScan
-from loguru import logger
+
 
 class ScanFactory(Factory):
     def build(self):

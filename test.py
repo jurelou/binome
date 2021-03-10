@@ -31,5 +31,8 @@ ml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
 
 import re
 
-for i in re.findall(r'port protocol="(.*)" portid=".*"><state state=.* reason=.*service name="(.*)" method', toto):
+for i in re.findall(
+    r'port protocol="(.*)" portid=".*"><state state=.* reason=.*service name="(.*)" method',
+    toto,
+):
     print(i)

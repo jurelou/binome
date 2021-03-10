@@ -5,8 +5,11 @@ celery:
 collectors:
     - dummy-docker-collector
     - recon-ng
-    - Certificate transparency
+    - certificate-transparency
     - nmap
+    # - dirsearch
+    - sherlock
+    - infoga
 
 elasticsearch:
     endpoint:

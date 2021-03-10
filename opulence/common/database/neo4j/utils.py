@@ -1,5 +1,6 @@
-from neo4j import GraphDatabase
 from loguru import logger
+from neo4j import GraphDatabase
+
 
 def create_client(config):
     logger.info(f"Create neo4j client: {config}")

@@ -1,18 +1,17 @@
 from uuid import uuid4
-from celery.schedules import  schedule
-from opulence.engine.app import celery_app
+
+from celery.schedules import schedule
+from loguru import logger
+
 from opulence.config import engine_config
+from opulence.engine.app import celery_app
 from opulence.engine.controllers import agents as agents_ctrl
 from opulence.engine.controllers import case as case_ctrl
 from opulence.engine.controllers import fact as fact_ctrl
-from opulence.engine.controllers import scan as scan_ctrl
 from opulence.engine.controllers import periodic_tasks
-
-
+from opulence.engine.controllers import scan as scan_ctrl
 from opulence.engine.models.case import Case
 from opulence.engine.models.scan import Scan
-from loguru import logger
-
 
 
 @celery_app.task
@@ -23,15 +22,17 @@ def toto():
 @celery_app.task
 def reload_periodic_tasks():
     periodic_tasks.flush()
-    periodic_tasks.add_periodic_task(app=celery_app, interval=schedule(run_every=engine_config.refresh_agents_interval), task_path='opulence.engine.tasks.reload_agents')
+    periodic_tasks.add_periodic_task(
+        app=celery_app,
+        interval=schedule(run_every=engine_config.refresh_agents_interval),
+        task_path="opulence.engine.tasks.reload_agents",
+    )
 
 
 @celery_app.task
 def reload_agents():
     logger.debug("Reloading agents")
     agents_ctrl.refresh_agents()
-
-
 
 
 @celery_app.task
@@ -62,18 +63,20 @@ def launch_scan(scan_id: uuid4):
         scan_ctrl.launch(scan)
 
     except Exception as err:
-        import sys, traceback
+        import sys
+        import traceback
+
         traceback.print_exc(file=sys.stdout)
         logger.critical(err)
     # scan_ctrl.create(scan)
     # case_ctrl.add_scan(case_id, scan.external_id)
+
 
 @celery_app.task
 def schedule_scan(scan_id: uuid4):
     logger.debug(f"Schedule scan {scan_id}")
     scan = scan_ctrl.get(scan_id)
     scan_ctrl.schedule(scan)
-
 
 
 # a = tasks.test_agent.apply_async().get()

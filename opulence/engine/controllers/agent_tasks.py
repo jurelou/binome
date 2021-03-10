@@ -1,24 +1,28 @@
 from typing import List
 
 from celery.result import allow_join_result
+from loguru import logger
 
 from opulence.common.celery import async_call
 from opulence.common.fact import BaseFact
 from opulence.engine.app import celery_app
-from loguru import logger
-
 from opulence.engine.controllers.scan import add_facts
+
 # from opulence.engine.controllers.fact import add_many
+
 
 @celery_app.task(ignore_result=True, acks_late=True)
 def scan_success(result, scan_id):
     try:
-        logger.info(f"Task success: got {len(result['facts'])} facts in {result['duration']}")
+        logger.info(
+            f"Task success: got {len(result['facts'])} facts in {result['duration']}"
+        )
         # print(result)
         # add_many()
         add_facts(scan_id, result["facts"])
     except Exception as err:
         logger.critical(err)
+
 
 @celery_app.task
 def scan_error(task_id, collector_name):

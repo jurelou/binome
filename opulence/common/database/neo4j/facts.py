@@ -1,6 +1,8 @@
 from typing import List
 from uuid import uuid4
+
 from loguru import logger
+
 from opulence.common.fact import BaseFact
 
 

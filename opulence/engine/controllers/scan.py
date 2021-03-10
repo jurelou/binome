@@ -1,6 +1,8 @@
 from typing import List
 from uuid import uuid4
+
 from loguru import logger
+
 from opulence.common.database.neo4j import scans as neo4j_scans
 from opulence.engine.app import neo4j_client
 from opulence.engine.controllers import fact as fact_ctrl
@@ -14,16 +16,17 @@ all_scans = ScanFactory().build()
 # def schedule():
 #     add_periodic_task(app=celery_app, interval=1, task_path="opulence.engine.tasks.toto")
 
+
 def create(scan: Scan):
     logger.info(f"Create scan {scan}")
     neo4j_scans.create(neo4j_client, scan)
 
+
 def add_facts(scan_id: uuid4, facts_ids: List[uuid4]):
     logger.info(f"Add collected facts {facts_ids} to scan {scan_id}")
 
-
-
     neo4j_scans.add_facts(neo4j_client, scan_id, facts_ids, relationship="collects")
+
 
 def add_user_input_facts(scan_id: uuid4, facts_ids: List[uuid4]):
     logger.info(f"Add user input facts {facts_ids} to scan {scan_id}")
@@ -46,7 +49,7 @@ def launch(scan: Scan):
         logger.error(f"Scan {scan.scan_type} not found")
         raise ValueError(f"Scan {scan.scan_type} not found")
 
-    scan_class =  all_scans[scan.scan_type]()
+    scan_class = all_scans[scan.scan_type]()
 
     scan_config = scan.dict(exclude={"timestamp", "scan_type", "facts"})
     scan_config["facts"] = scan.facts

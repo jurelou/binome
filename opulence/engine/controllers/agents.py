@@ -1,6 +1,7 @@
+from loguru import logger
+
 from opulence.config import engine_config
 from opulence.engine.app import celery_app
-from loguru import logger
 
 available_agents = {}
 

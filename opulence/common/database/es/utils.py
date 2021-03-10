@@ -1,13 +1,9 @@
-
 from elasticsearch import Elasticsearch
 import httpx
-
 from loguru import logger
+
 from opulence.common.database.es import facts
 from opulence.facts import all_facts
-
-
-
 
 kibana_index_patterns = ["facts_*"]
 kibana_index_patterns.extend(

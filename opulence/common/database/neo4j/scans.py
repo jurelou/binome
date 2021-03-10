@@ -3,7 +3,9 @@ from typing import List
 from uuid import uuid4
 
 from loguru import logger
+
 from opulence.engine.models.scan import Scan
+
 
 def get(client, scan_id: uuid4):
     with client.session() as session:
@@ -15,6 +17,7 @@ def get(client, scan_id: uuid4):
         )
         scan = result.single()
         return Scan(**scan.data()["scan"])
+
 
 def get_user_input_facts(client, scan_id: uuid4, include_scan=True):
     logger.info(f"Get user input facts from scan {scan_id}")
@@ -40,20 +43,22 @@ def create(client, scan: Scan):
         )
 
 
-def add_facts(client, scan_id: uuid4, facts_ids: List[str], relationship: str = "UNKNOWN"):
-        formated_links = [{"from": scan_id.hex, "to": fact} for fact in facts_ids]
-        
-        logger.info(f"Add {len(facts_ids)} facts to {scan_id}")
-        with client.session() as session:
+def add_facts(
+    client, scan_id: uuid4, facts_ids: List[str], relationship: str = "UNKNOWN"
+):
+    formated_links = [{"from": scan_id.hex, "to": fact} for fact in facts_ids]
 
-            session.run(
-                "UNWIND $links as link "
-                "MATCH (from:Scan), (to:Fact) "
-                "WHERE from.external_id = link.from AND to.external_id = link.to "
-                "CALL apoc.create.relationship(from, $relationship, {ts: $timestamp}, to) "
-                "YIELD rel "
-                "RETURN rel ",
-                links=formated_links,
-                timestamp=time(),
-                relationship=relationship
-            )
+    logger.info(f"Add {len(facts_ids)} facts to {scan_id}")
+    with client.session() as session:
+
+        session.run(
+            "UNWIND $links as link "
+            "MATCH (from:Scan), (to:Fact) "
+            "WHERE from.external_id = link.from AND to.external_id = link.to "
+            "CALL apoc.create.relationship(from, $relationship, {ts: $timestamp}, to) "
+            "YIELD rel "
+            "RETURN rel ",
+            links=formated_links,
+            timestamp=time(),
+            relationship=relationship,
+        )

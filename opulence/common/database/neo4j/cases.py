@@ -1,5 +1,7 @@
 from uuid import uuid4
+
 from loguru import logger
+
 from opulence.engine.models.case import Case
 from opulence.engine.models.scan import Scan
 

@@ -8,8 +8,6 @@ from pydantic import Field
 from pydantic import root_validator
 
 
-
-
 class BaseFact(BaseModel):
     __hash: Optional[str] = None
 

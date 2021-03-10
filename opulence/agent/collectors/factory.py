@@ -1,7 +1,10 @@
+from loguru import logger
+
 from opulence.agent.collectors.base import BaseCollector
+from opulence.agent.collectors.exceptions import InvalidCollectorDefinition
 from opulence.common.factory import Factory
 from opulence.config import agent_config
-from loguru import logger
+
 
 class CollectorFactory(Factory):
     def build(self):
@@ -23,7 +26,9 @@ class CollectorFactory(Factory):
                 raise InvalidCollectorDefinition(
                     f"Found collector with duplicate name `{collector_name}`.",
                 )
-            logger.info(f"Loaded collector {collector_name} with config: {collector_instance.config}")
+            logger.info(
+                f"Loaded collector {collector_name} with config: {collector_instance.config}"
+            )
             collector_instances[collector_name] = {
                 "instance": collector_instance,
                 "active": False,

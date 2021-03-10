@@ -10,7 +10,7 @@ class TaskTimeoutError(BaseOpulenceException):
         return f"Celery task timeout: ({self.value})"
 
 
-class   CollectorNotFound(BaseOpulenceException):
+class CollectorNotFound(BaseOpulenceException):
     def __init__(self, collector_name):
         self.collector_name = collector_name
 

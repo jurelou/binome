@@ -1,11 +1,12 @@
 from abc import ABC
 from abc import abstractmethod
 from importlib import import_module
-from loguru import logger
 import inspect
 import os
 import pkgutil
 import sys
+
+from loguru import logger
 
 from opulence.common.singleton import Singleton
 
@@ -50,7 +51,7 @@ class Factory(ABC, Singleton):
             for _, mod_cls in inspect.getmembers(module, inspect.isclass):
                 if (
                     mod_cls.__module__.startswith(mod_path)
-                    and issubclass(mod_cls, parent_class,)
+                    and issubclass(mod_cls, parent_class)
                     and parent_class != mod_cls
                 ):
                     modules.append(mod_cls)

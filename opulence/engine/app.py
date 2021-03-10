@@ -14,10 +14,9 @@ celery_app = create_app()
 celery_app.conf.update(engine_config.celery)
 
 
-celery_app.conf.update({
-        'imports': 'opulence.engine.tasks',
-})
-
+celery_app.conf.update(
+    {"imports": "opulence.engine.tasks",}
+)
 
 
 es_client = es_utils.create_client(engine_config.elasticsearch)
@@ -36,53 +35,49 @@ def init(sender=None, conf=None, **kwargs):
         neo4j_utils.flush(neo4j_client)
         neo4j_utils.create_constraints(neo4j_client)
 
-
         periodic_tasks.flush()
-        from opulence.engine import tasks # pragma: nocover
+        from opulence.engine import tasks  # pragma: nocover
+
         tasks.reload_agents.apply()
         # tasks.reload_periodic_tasks.apply()
 
-
     except Exception as err:
-        logger.critical(f'Error in signal `worker_init`: {err}')
+        logger.critical(f"Error in signal `worker_init`: {err}")
 
 
 @worker_ready.connect
 def ready(sender=None, conf=None, **kwargs):
     try:
 
-
-        from opulence.engine import tasks # pragma: nocover
-
-
         from opulence.engine.models.case import Case
         from opulence.engine.models.scan import Scan
-        from opulence.facts.person import Person
+        from opulence.engine import tasks  # pragma: nocover
         from opulence.facts.domain import Domain
+        from opulence.facts.person import Person
+        from opulence.facts.username import Username
+
         case = Case()
         # scan = Scan(collector_name="lol", facts=[Person(firstname="fname", lastname="lname")])
 
-
         scan = Scan(
             facts=[
+                Username(name="jurelou"),
                 Domain(fqdn="wavely.fr"),
                 Person(
-                    firstname='fname',
-                    lastname='lname',
-                    anther='ldm',
+                    firstname="fname",
+                    lastname="lname",
+                    anther="ldm",
                     first_seen=42,
                     last_seen=200,
                 ),
             ],
             scan_type="single_collector",
-            collector_name="nmap",
+            collector_name="infoga",
         )
 
-        tasks.add_case.apply(args=[case])     
+        tasks.add_case.apply(args=[case])
         tasks.add_scan.apply(args=[case.external_id, scan])
         tasks.launch_scan.apply(args=[scan.external_id])
 
     except Exception as err:
         logger.critical(f"Error in signal `worker_ready`: {err}")
-
-

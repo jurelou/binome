@@ -1,7 +1,8 @@
 from typing import List
 from uuid import uuid4
-from loguru import logger
+
 from elasticsearch.helpers import bulk
+from loguru import logger
 
 from opulence.common.fact import BaseFact
 from opulence.facts import all_facts
@@ -52,9 +53,7 @@ def get_many(client, facts):
     facts = []
     for fact_type, ids in mapping.items():
         logger.info(f"Get {fact_type}: {ids}")
-        res = client.mget(
-            index=fact_to_index(fact_type), body={"ids": ids},
-        )
+        res = client.mget(index=fact_to_index(fact_type), body={"ids": ids},)
         facts.extend(
             [
                 BaseFact.from_obj(
@@ -67,7 +66,7 @@ def get_many(client, facts):
 
 
 def bulk_upsert(client, facts):
-    def gen_actions(facts):    
+    def gen_actions(facts):
         logger.info(f"Upsert fact: {len(facts)}")
         for fact in facts:
             yield {

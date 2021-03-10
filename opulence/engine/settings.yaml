@@ -22,7 +22,7 @@ neo4j:
     endpoint: bolt://localhost:7687
     username: neo4j
     password: root
-    
+
 # mongodb:
 #     endpoint: mongodb://localhost:27017
     # username: root

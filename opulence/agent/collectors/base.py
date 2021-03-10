@@ -1,6 +1,6 @@
 from functools import partial
-
 import re
+
 # from opulence.agent.collectors.dependencies import Dependency
 from timeit import default_timer as timer
 from typing import Callable
@@ -10,18 +10,16 @@ from typing import List
 from typing import Optional
 from typing import Union
 
+from loguru import logger
 from pydantic import BaseModel
 from pydantic import ValidationError
 from pydantic import root_validator
 
-from loguru import logger
 from opulence.agent.collectors.exceptions import CollectorRuntimeError
 from opulence.agent.collectors.exceptions import InvalidCollectorDefinition
 from opulence.common.fact import BaseFact
 from opulence.common.types import BaseSet
 from opulence.common.utils import make_list
-
-
 
 # class CollectItem(BaseModel):
 #     pass
@@ -32,6 +30,7 @@ from opulence.common.utils import make_list
 #     day_of_week: Union[str, int] = "*"
 #     day_of_month: Union[str, int] = "*"
 #     month_of_year: Union[str, int] = "*"
+
 
 class BaseConfig(BaseModel):
     name: str
@@ -46,6 +45,7 @@ class BaseConfig(BaseModel):
     #         if not values.get('schedule'):
     #             raise ValueError(f'Schedule should be set for collector {values.get("name")}')
     #     return values
+
 
 class CollectResult(BaseModel):
     collector_config: BaseConfig
@@ -80,14 +80,16 @@ class BaseCollector:
     def _sanitize_output(self, fn):
         try:
             output = make_list(fn())
-            output = list(filter(None, output)) 
+            output = list(filter(None, output))
             if not output:
                 return []
             for out in output:
-                    if isinstance(out, BaseFact):
-                        yield out
-                    else:
-                        logger.error(f"Found unknown output from collector {self.config.name}: {out}")
+                if isinstance(out, BaseFact):
+                    yield out
+                else:
+                    logger.error(
+                        f"Found unknown output from collector {self.config.name}: {out}"
+                    )
         except Exception as err:
             logger.error(f"Error while executing {fn} from {self.config.name}: {err}")
             raise CollectorRuntimeError(err) from err
@@ -118,7 +120,9 @@ class BaseCollector:
 
         callbacks = self._prepare_callbacks(facts)
 
-        logger.info(f"Execute collector {self.config.name} with {len(facts)} facts and {len(callbacks)} callbacks")
+        logger.info(
+            f"Execute collector {self.config.name} with {len(facts)} facts and {len(callbacks)} callbacks"
+        )
 
         output_facts = self._execute_callbacks(callbacks)
         return CollectResult(

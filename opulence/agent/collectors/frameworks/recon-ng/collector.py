@@ -1,15 +1,15 @@
+import re
+
 from opulence.agent.collectors.docker import DockerCollector
 from opulence.common.utils import get_actual_dir
-from opulence.facts.person import Person
 from opulence.facts.domain import Domain
-import re
+from opulence.facts.person import Person
+
 
 class DummyDocker(DockerCollector):
     config = {
         "name": "recon-ng",
-        "docker": {
-            "build_context": get_actual_dir(),
-        },
+        "docker": {"build_context": get_actual_dir(),},
     }
 
     def callbacks(self):
@@ -17,7 +17,15 @@ class DummyDocker(DockerCollector):
 
     def run_hacker_target(self, fqdn):
         yield
-        data = self.run_container(command=["-m", "recon/domains-hosts/hackertarget", "-o", f"SOURCE={fqdn}", "-x"])
+        data = self.run_container(
+            command=[
+                "-m",
+                "recon/domains-hosts/hackertarget",
+                "-o",
+                f"SOURCE={fqdn}",
+                "-x",
+            ]
+        )
         for item in self.findall_regex(data, r"Host: (.*)"):
             yield Domain(fqdn=item)
 

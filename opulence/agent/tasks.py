@@ -1,8 +1,8 @@
 from typing import List
 
 from celery import current_task
-
 from loguru import logger
+
 from opulence.agent.app import celery_app
 from opulence.agent.app import es_client
 from opulence.agent.collectors.factory import CollectorFactory
@@ -10,14 +10,13 @@ from opulence.agent import exceptions
 from opulence.common.database.es import facts as facts_index
 from opulence.common.fact import BaseFact
 
-
-
 all_collectors = CollectorFactory().items
 
 # @celery_app.task
 # def toto():
 #     logger.info("OOOOOOOOOOOO")
 #     print("GOOGOGOOGOG")
+
 
 @celery_app.task(name="scan", throws=(exceptions.BaseAgentException))
 def scan(facts: List[BaseFact]):
@@ -40,4 +39,3 @@ def scan(facts: List[BaseFact]):
     except Exception as err:
         logger.critical(err)
     return result
-

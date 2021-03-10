@@ -1,7 +1,8 @@
 from opulence.agent.collectors.docker import DockerCollector
 from opulence.common.utils import get_actual_dir
-from opulence.facts.person import Person
 from opulence.facts.email import Email
+from opulence.facts.person import Person
+
 
 class DummyDocker(DockerCollector):
     config = {
@@ -10,7 +11,6 @@ class DummyDocker(DockerCollector):
             # "image": "ubuntu:latest"
             "build_context": get_actual_dir(),
         },
-
         # "periodic": True,
         # "schedule": {
         #     "minute": "*"
